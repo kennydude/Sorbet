@@ -1,0 +1,60 @@
+body{
+	font-size: 90%;
+	font-family: sans-serif;
+	padding: 0px;
+	margin: 0;
+	background: #EEF3F8;
+}
+th{ padding: 0 20px; }
+.centrebox, table, .box{
+	margin: 10px;
+	background: #fff;
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 5px 5px;	
+}
+.inline{ display: inline }
+.left-col{ width: 60%; }
+.right-col{ width: 30%; }
+.left-col, .right-col{float:left}
+.reset{clear:both}
+.centrebox{
+	margin: 80px auto;
+	width: 460px;
+}
+.title{
+	font-size: 30px;
+}
+input[type=text], input[type=password]{
+	padding: 6px;
+	margin: 6px 0px;
+	border: 1px solid #999;
+	width: 100%;
+	font-size: 20px;
+}
+.error,.done{
+	margin: 5px;
+	padding: 10px;
+	border: 2px solid;
+}
+.done{
+	border: #00c000;
+	background: #ccffcc;
+}
+.error{
+	border: #ff3300;
+	background: #ff9966;
+}
+body > div{ padding: 10px; }
+.headerbox{
+	background: #006699;
+	color: #fff;
+	font-size: 25px;
+}
+.sep{ border-right: 1px solid #fff; width: 0px; margin-right: 2px; }
+.headerbox a{ color: #fff !important; }
+hr{
+	margin: 3px;
+	border: none;
+	border-top: 1px solid #999;
+}
