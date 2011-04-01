@@ -42,8 +42,11 @@ class Page{
 			die("FATAL: Please set the Page->template");
 		if($this->isDataPage)
 			$data = $this->fetchData();
-		if($_POST)
-			$post_response = $this->postHandler();
+			if($_POST)
+				$post_response = $this->postHandler($data);
+		else
+			if($_POST)
+				$post_response = $this->postHandler();
 		$this->onPreRender();
 		if($_GET['format']){ // Output as JSON etc
 			switch($_GET['format']){

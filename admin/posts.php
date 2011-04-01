@@ -10,6 +10,9 @@ class AdminPostListPage extends AdminPage{
 		"global_actions" => array(
 				"New Post" => "post-editor.php"	
 			),
+		"item_actions" => array(
+				"Edit Post" => "post-editor.php?post=$1"
+			),
 		"headers" => array(
 				"title" => "Post Title",
 				"created" => "Created"

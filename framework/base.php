@@ -70,9 +70,13 @@ class Blob{
 	 */
 	public function commit(){
 		if(is_null($this->id)){
-			// INSERT
+			$sql = "INSERT INTO blobs (title,body,created,content_type) VALUES ('".
+				e($this->title)."', '".e($this->body)."', NOW(), '".e($this->content_type)."')";
+			query_database($sql);
+			$this->id = mysql_insert_id();
 		} else{
-			// UPDATE
+			query_database("UPDATE blobs SET `title`='".
+				e($this->title)."', `body`='".e($this->body)."' WHERE `id`='".e($this->id)."'");
 		}
 	}
 }
@@ -89,12 +93,12 @@ function e($i){ return @mysql_real_escape_string($i); }
  */
 function query_database($sql){
 	$r = @mysql_query($sql);
-	if($r){
+	if($r != false){
 		$result = array();
-		while ($row = mysql_fetch_array($r)) {
+		while ($row = @mysql_fetch_array($r)) {
 			$result[] = $row;
 		}
-		mysql_free_result($r);
+		@mysql_free_result($r);
 		return $result;
 	} else{ /* TODO: error handling */ print "db error" . mysql_error(); }
 }
