@@ -1,9 +1,33 @@
 body{
 	font-size: 90%;
-	font-family: sans-serif;
+	font-family: helvetica neue, helvetica, sans-serif;
 	padding: 0px;
 	margin: 0;
 	background: #EEF3F8;
+}
+.most{ width: 80%; }
+.left{ float: left; }
+#date-input select{
+	border: none;
+	background: transparent;
+	position: relative;
+	left: 15px;
+	color: #fff;
+	width: 70px;
+	-webkit-appearance: none;
+}
+#date-input #day{
+	top: 10px;
+	font-size: 25px;
+}
+.pad10{ padding: 5px; }
+.clear{ clear: both; }
+#date-input{
+	float: left;
+	background: url(res/Bookmark-item.png);
+	width: 100px;
+	height: 115px;
+	margin-top: -10px; 
 }
 th{ padding: 0 20px; }
 .centrebox, table, .box{
