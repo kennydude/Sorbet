@@ -41,9 +41,9 @@ class Page{
 		if(!$this->template)
 			die("FATAL: Please set the Page->template");
 		if($this->isDataPage)
-			$data = $this->fetchData();
+			$this->data = $this->fetchData();
 			if($_POST)
-				$post_response = $this->postHandler($data);
+				$post_response = $this->postHandler($this->data);
 		else
 			if($_POST)
 				$post_response = $this->postHandler();
@@ -51,10 +51,11 @@ class Page{
 		if($_GET['format']){ // Output as JSON etc
 			switch($_GET['format']){
 				case "json":
-					echo json_encode($data);
+					echo json_encode($this->data);
 					break;
 			}
 		} else{
+			$data = $this->data;
 			$page_data = $this->page_data;
 			$coredir = "../templates/"; // TODO: Have this to work properly
 			if(!is_null($this->masterPage)){

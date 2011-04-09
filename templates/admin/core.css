@@ -16,6 +16,7 @@ body{
 	width: 70px;
 	-webkit-appearance: none;
 }
+.hide{ display: none }
 #date-input #day{
 	top: 10px;
 	font-size: 25px;
@@ -69,7 +70,7 @@ input[type=text], input[type=password]{
 	border: #ff3300;
 	background: #ff9966;
 }
-body > div{ padding: 10px; }
+body > div, body > form > div{ padding: 10px; }
 .headerbox{
 	background: #006699;
 	color: #fff;

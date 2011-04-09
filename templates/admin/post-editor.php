@@ -1,5 +1,5 @@
 <div id="main-post" class="box left-col">
-	<form method="post" action="post-editor.php?post=<?php echo $_GET['post']; ?>">
+	<form method="post" action="blob-editor.php?blob=<?php echo $_GET['blob']; ?>">
 		<div id="date-input">
 			<select id="day">
 				<option>1st</option>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>Sorbet: AdminLoginPage Class Reference</title>
+<title>Sorbet: BlobList Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javaScript" src="search/search.js"></script>
@@ -48,77 +48,91 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Data Fields</a>  </div>
+<a href="#pub-attribs">Data Fields</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a>  </div>
   <div class="headertitle">
-<h1>AdminLoginPage Class Reference</h1>  </div>
+<h1>BlobList Class Reference</h1>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="AdminLoginPage" --><!-- doxytag: inherits="AdminPage" --><div class="dynheader">
-Inheritance diagram for AdminLoginPage:</div>
+<!-- doxytag: class="BlobList" --><!-- doxytag: inherits="Blob" -->
+<p>List of blobs.  
+<a href="#_details">More...</a></p>
+<div class="dynheader">
+Inheritance diagram for BlobList:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classAdminLoginPage.png" usemap="#AdminLoginPage_map" alt=""/>
-  <map id="AdminLoginPage_map" name="AdminLoginPage_map">
-<area href="classAdminPage.html" alt="AdminPage" shape="rect" coords="0,56,107,80"/>
-<area href="classPage.html" alt="Page" shape="rect" coords="0,0,107,24"/>
+  <img src="classBlobList.png" usemap="#BlobList_map" alt=""/>
+  <map id="BlobList_map" name="BlobList_map">
+<area href="classBlob.html" alt="Blob" shape="rect" coords="0,0,56,24"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac676367d0aff6d93bfc33a5e710dd4a4"></a><!-- doxytag: member="AdminLoginPage::postHandler" ref="ac676367d0aff6d93bfc33a5e710dd4a4" args="()" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminLoginPage.html#ac676367d0aff6d93bfc33a5e710dd4a4">postHandler</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Override if you support POST. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBlobList.html#ade82c60f2ce01845b4530d362687b1be">handlePostPostCommit</a> ($post)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Overriding this allows you to add children etc, as $id will be set.  <a href="#ade82c60f2ce01845b4530d362687b1be"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminLoginPage.html#a3265df7f7f6243fc57d1f18fe465f6bc">$isDataPage</a> = false</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">If the page requires data.  <a href="#a3265df7f7f6243fc57d1f18fe465f6bc"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12fd33375d160c5a7ceb4243ddace7d9"></a><!-- doxytag: member="AdminLoginPage::$masterPage" ref="a12fd33375d160c5a7ceb4243ddace7d9" args="" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><b>$masterPage</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1dd8e08d507ac238ead71272802e93ba"></a><!-- doxytag: member="AdminLoginPage::$loginPage" ref="a1dd8e08d507ac238ead71272802e93ba" args="" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><b>$loginPage</b> = true</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdminLoginPage.html#aa3e9534005fd516d941f6a5569896e01">$template</a> = &quot;admin/login.php&quot;</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The template to use.  <a href="#aa3e9534005fd516d941f6a5569896e01"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87bb3b98b642e8ceea68e95c747c11d4"></a><!-- doxytag: member="BlobList::$admin_editor" ref="a87bb3b98b642e8ceea68e95c747c11d4" args="" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><b>$admin_editor</b> = &quot;admin/list-editor.php&quot;</td></tr>
+<tr><td colspan="2"><h2><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static&nbsp;</td><td class="memItemRight" valign="bottom"><b>$list_headers</b></td></tr>
 </table>
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
+<p>List of blobs. </p>
+<dl class="author"><dt><b>Author:</b></dt><dd>kennydude </dd></dl>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ade82c60f2ce01845b4530d362687b1be"></a><!-- doxytag: member="BlobList::handlePostPostCommit" ref="ade82c60f2ce01845b4530d362687b1be" args="($post)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">handlePostPostCommit </td>
+          <td>(</td>
+          <td class="paramtype">$&nbsp;</td>
+          <td class="paramname"> <em>post</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Overriding this allows you to add children etc, as $id will be set. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>array</em>&nbsp;</td><td>$post </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classBlob.html#ade82c60f2ce01845b4530d362687b1be">Blob</a>.</p>
+
+</div>
+</div>
 <hr/><h2>Field Documentation</h2>
-<a class="anchor" id="a3265df7f7f6243fc57d1f18fe465f6bc"></a><!-- doxytag: member="AdminLoginPage::$isDataPage" ref="a3265df7f7f6243fc57d1f18fe465f6bc" args="" -->
+<a class="anchor" id="ad572c9469c243e3cf58884968a391fd1"></a><!-- doxytag: member="BlobList::$list_headers" ref="ad572c9469c243e3cf58884968a391fd1" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">$isDataPage = false</td>
+          <td class="memname">$list_headers<code> [static]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
-
-<p>If the page requires data. </p>
-<p>If not, don't implement fetchData </p>
-
-<p>Reimplemented from <a class="el" href="classPage.html#a3265df7f7f6243fc57d1f18fe465f6bc">Page</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa3e9534005fd516d941f6a5569896e01"></a><!-- doxytag: member="AdminLoginPage::$template" ref="aa3e9534005fd516d941f6a5569896e01" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">$template = &quot;admin/login.php&quot;</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The template to use. </p>
-<p>You need to override this </p>
-
-<p>Reimplemented from <a class="el" href="classPage.html#aa3e9534005fd516d941f6a5569896e01">Page</a>.</p>
+<b>Initial value:</b><div class="fragment"><pre class="fragment"> array(
+                <span class="stringliteral">&quot;title&quot;</span> =&gt; <span class="stringliteral">&quot;List Title&quot;</span>,
+                <span class="stringliteral">&quot;created&quot;</span> =&gt; <span class="stringliteral">&quot;Created&quot;</span>
+        )
+</pre></div>
+<p>Reimplemented from <a class="el" href="classBlob.html">Blob</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>admin/login.php</li>
+<li>framework/list.php</li>
 </ul>
 </div>
 <!--- window showing the filter options -->

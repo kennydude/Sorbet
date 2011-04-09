@@ -7,6 +7,8 @@ require_once("base.php");
  *
  */
 class Post extends Blob{
+	public $admin_editor = "admin/post-editor.php";
+	
 	/***
 	 * Get Posts from database
 	 */

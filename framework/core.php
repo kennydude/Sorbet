@@ -1,7 +1,17 @@
 <?php
+chdir(dirname(__FILE__));
 require_once("base.php");
 require_once("post.php");
+require_once("./list.php");
 require_once("mvc.php");
+
+function get_content_types(){
+	$base = array(
+		"post" => Post,
+		"list" => BlobList,
+	);
+	return $base;
+}
 
 // Set up database
 // TODO: Settings. Note: These settings are only for my system

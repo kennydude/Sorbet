@@ -1,7 +1,8 @@
 <div>
 	<span class="title"><?php echo $page_data['title']; ?></span>
 	<?php foreach($page_data['global_actions'] as $title => $url){ ?>
-	<form class="inline" method="get" action="<?php echo $url; ?>">
+	<form class="inline" method="get" action="redir.php">
+	<input type="hidden" name="url" value="<?php echo $url; ?>" />
 	<input type="submit" value="<?php echo $title; ?>" />
 	</form>
 	<?php } ?>
