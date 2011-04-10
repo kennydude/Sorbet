@@ -8,7 +8,7 @@
 		<div class="headerbox">
 			<a href="index.php">Sorbet</a>
 			<span class="sep">&nbsp;</span>
-			<a href="pages.php">Pages</a>
+			<a href="list.php?type=page">Pages</a>
 			<span class="sep">&nbsp;</span>
 			<a href="list.php?type=list">Lists</a>
 			<span class="sep">&nbsp;</span>

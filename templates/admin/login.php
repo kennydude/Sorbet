@@ -2,6 +2,12 @@
 <html>
 	<head>
 		<title>Please login to admin site</title>
+		<script type="text/javascript" src="<?php echo $coredir; ?>/admin/res/jquery.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$("#username").focus();
+		});
+		</script>
 		<link rel="stylesheet" type="text/css" href="<?php echo $coredir; ?>/admin/core.css" />
 	</head>
 	<body>
@@ -14,7 +20,7 @@
 			<?php } ?>
 			<form method="post" action="login.php">
 				Username:<br/>
-				<input type="text" name="username" /><br/>
+				<input type="text" id="username" name="username" /><br/>
 				Password:<br/>
 				<input type="password" name="password" /><br/>
 				<input type="submit" value="Login" />

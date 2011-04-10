@@ -1,5 +1,7 @@
 <?php
 // Sorbet base. Contains core API
+require_once("db.php");
+require_once("markdown.php");
 
 /**
  * Base class for Sorbet
@@ -11,6 +13,7 @@ class Blob{
 	public $body = "";
 	public $content_type = "blob";
 	public $extra_data = array();
+	public $url_slug = "";
 	public $created = "";
 	private $_parent = "";
 	public $id;
@@ -41,7 +44,7 @@ class Blob{
 	 * Return the body as HTML and not Markdown
 	 */
 	public function body_html(){
-		
+		return Markdown($this->body);
 	}
 	
 	/**
@@ -55,7 +58,7 @@ class Blob{
 	 * This will fetch the children from the database
 	 */
 	public function getChildren(){
-		$data = query_database("SELECT * FROM blobs WHERE `parent`='".e($this->id)."'");
+		$data = get_data('blobs', array('parent'=>$this->id));
 		$result = array();
 		foreach($data as $r){
 			$result[] = static::arrayToBlob($r);
@@ -69,8 +72,7 @@ class Blob{
 	public static function fetchBlobs($from, $type="post"){
 		if(!$from)
 			$from = 0;
-		$sql = "SELECT * FROM blobs WHERE `content_type`='$type' LIMIT $from," . ($from+10);
-		$data = query_database($sql);
+		$data = get_data('blobs', array('content_type'=>$type), $from, $from+10);
 		$result = array();
 		foreach($data as $blob){
 			$result[] = static::arrayToBlob($blob);
@@ -83,7 +85,17 @@ class Blob{
 	 * by the lower classes.
 	 */
 	public static function getBlob($id){
-		$data = query_database("SELECT * FROM blobs WHERE `id`='".e($id)."'");
+		$data = get_data('blobs', array('id' => $id));
+		$data = $data[0];
+		return static::arrayToBlob($data);
+	}
+	
+	/**
+	 * Will get the blob for the url
+	 * @param string $slug
+	 */
+	public static function getBlobBySlug($slug){
+		$data = get_data('blobs', array('url_slug' => $slug));
 		$data = $data[0];
 		return static::arrayToBlob($data);
 	}
@@ -92,6 +104,8 @@ class Blob{
 	 * Turns a database array into a Blob
 	 */
 	public static function arrayToBlob($data){
+		if(!$data)
+			return NULL;
 		$content_links = get_content_types();
 		$type = $content_links[$data['content_type']];
 		if(!$type)
@@ -102,24 +116,31 @@ class Blob{
 		$item->id = $data['id'];
 		$item->body = $data['body'];
 		$item->created = $data['created'];
+		$item->url_slug = $data['url_slug'];
 		$item->_parent = $data['parent'];
 		return $item;
+	}
+	
+	/**
+	 * Outputs the Blob as a php array
+	 */
+	public function to_array(){
+		return array(
+			"title" => $this->title,
+			"body" => $this->body,
+			"created" => time(),
+			"content_type" => $this->content_type,
+			"id" => $this->id,
+			"parent" => $this->parent,
+			"url_slug" => $this->url_slug
+		);
 	}
 	
 	/***
 	 * Saves the object to the database
 	 */
 	public function commit(){
-		if(is_null($this->id)){
-			$sql = "INSERT INTO blobs (title,body,created,content_type,parent) VALUES ('".
-				e($this->title)."', '".e($this->body)."', NOW(), '".e($this->content_type)."','"
-				.e($this->parent)."')";
-			query_database($sql);
-			$this->id = mysql_insert_id();
-		} else{
-			query_database("UPDATE blobs SET `title`='".
-				e($this->title)."', `body`='".e($this->body)."' WHERE `id`='".e($this->id)."'");
-		}
+		put_data('blobs', $this->to_array());
 		// Update tags
 		Tag::clearForObject($this, "mention");
 		preg_match_all("/\@([a-zA-Z0-9]+)/", $this->body, $out);
@@ -171,7 +192,7 @@ class Tag{
 	public static function clearForObject($id, $type = 0){
 		if(!is_int($id))
 			$id = $id->id;
-		$sql = "DELETE FROM tags WHERE `link`='".e($id)."'";
+		$sql = "DELETE FROM tags WHERE `link`='".e($id)."'"; // TODO: Move to db.php
 		if(!is_int($type))
 			$sql .= " AND `type`='".e($type)."'";
 		echo $sql;
@@ -182,35 +203,11 @@ class Tag{
 	 * Commits the object to the database
 	 */
 	public function commit(){
-		if($this->_saved == false){
-			$sql = "INSERT INTO tags (type,link,text) VALUES('".
-				e($this->type)."', '".e($this->_link)."', '".e($this->text)."')";
-			query_database($sql);
-			$this->_saved = true;
-		} else{
-			
-		}
+		put_data('tags', array(
+			"type" => $this->type,
+			"link" => $this->_link,
+			"text" => $this->text
+		));
+		$this->_saved = true;
 	}
-}
-
-/**
- * Shorthand for mysql_real_escape_string
- * @param $i
- */
-function e($i){ return @mysql_real_escape_string($i); }
-
-/**
- * Query the database and return the array as a result!
- * @param string $sql
- */
-function query_database($sql){
-	$r = @mysql_query($sql);
-	if($r != false){
-		$result = array();
-		while ($row = @mysql_fetch_array($r)) {
-			$result[] = $row;
-		}
-		@mysql_free_result($r);
-		return $result;
-	} else{ /* TODO: error handling */ print "db error" . mysql_error(); }
 }

@@ -38,8 +38,6 @@ class Page{
 	public function onPostRender(){}
 	
 	public function render(){
-		if(!$this->template)
-			die("FATAL: Please set the Page->template");
 		if($this->isDataPage)
 			$this->data = $this->fetchData();
 			if($_POST)
@@ -51,7 +49,10 @@ class Page{
 		if($_GET['format']){ // Output as JSON etc
 			switch($_GET['format']){
 				case "json":
-					echo json_encode($this->data);
+					if(is_object($this->data))
+						echo json_encode($this->data->to_array());
+					else
+						echo json_encode($this->data);
 					break;
 			}
 		} else{

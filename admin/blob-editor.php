@@ -27,6 +27,7 @@ class AdminEditorPage extends AdminPage{
 	public function postHandler($data){
 		$data->title = $_POST['title'];
 		$data->body = $_POST['body'];
+		$data->url_slug = $_POST['url_slug'];
 		if($_GET['type'])
 			$data->content_type = $_GET['type'];
 		$data->handlePostPreCommit($_POST);

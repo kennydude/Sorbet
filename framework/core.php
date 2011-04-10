@@ -4,11 +4,13 @@ require_once("base.php");
 require_once("post.php");
 require_once("./list.php");
 require_once("mvc.php");
+require_once("./page.php");
 
 function get_content_types(){
 	$base = array(
 		"post" => Post,
 		"list" => BlobList,
+		"page" => ContentPage
 	);
 	return $base;
 }

@@ -17,6 +17,8 @@
 		</div>
 		<div id="title" class="pad10 most left">
 			<input type="text" name="title" value="<?php echo $data->title; ?>" />
+			<br/>
+			Url slug: <input type="text" name="url_slug" value="<?php echo $data->url_slug; ?>" />
 		</div>
 		<span class="clear"></span>
 		<textarea name="body" style="width:100%; min-height:400px;padding:6px;"><?php echo $data->body; ?></textarea>
