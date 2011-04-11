@@ -10,13 +10,17 @@ require_once("markdown.php");
  */
 class Blob{
 	public $title = "";
+	public $view_template = "post.php";
+	public $admin_editor = "admin/post-editor.php";
 	public $body = "";
 	public $content_type = "blob";
 	public $extra_data = array();
 	public $url_slug = "";
 	public $created = "";
 	private $_parent = "";
+	public $status = "";
 	public $id;
+	public $mention_url = "?tag=$1&type=mention";
 	
 	/**
 	 * Overriding this allows the object to handle more post values than
@@ -44,7 +48,9 @@ class Blob{
 	 * Return the body as HTML and not Markdown
 	 */
 	public function body_html(){
-		return Markdown($this->body);
+		$o = Markdown($this->body);
+		$o = preg_replace("/\@([a-zA-Z0-9]+)/", "@<a href='".$this->mention_url."'>$1</a>", $o);
+		return $o;
 	}
 	
 	/**
@@ -69,10 +75,10 @@ class Blob{
 	/***
 	 * 
 	 */
-	public static function fetchBlobs($from, $type="post"){
+	public static function fetchBlobs($from, $type="post",$filters=array()){
 		if(!$from)
 			$from = 0;
-		$data = get_data('blobs', array('content_type'=>$type), $from, $from+10);
+		$data = get_data('blobs', array_merge( $filters, array('content_type'=>$type) ), $from, $from+10);
 		$result = array();
 		foreach($data as $blob){
 			$result[] = static::arrayToBlob($blob);
@@ -105,7 +111,7 @@ class Blob{
 	 */
 	public static function arrayToBlob($data){
 		if(!$data)
-			return NULL;
+			return new Blob();
 		$content_links = get_content_types();
 		$type = $content_links[$data['content_type']];
 		if(!$type)
@@ -116,6 +122,7 @@ class Blob{
 		$item->id = $data['id'];
 		$item->body = $data['body'];
 		$item->created = $data['created'];
+		$item->status = $data['status'];
 		$item->url_slug = $data['url_slug'];
 		$item->_parent = $data['parent'];
 		return $item;
@@ -132,7 +139,8 @@ class Blob{
 			"content_type" => $this->content_type,
 			"id" => $this->id,
 			"parent" => $this->parent,
-			"url_slug" => $this->url_slug
+			"url_slug" => $this->url_slug,
+			"status" => $this->status
 		);
 	}
 	
@@ -141,6 +149,9 @@ class Blob{
 	 */
 	public function commit(){
 		put_data('blobs', $this->to_array());
+		$id = mysql_insert_id();
+		if($id != 0)
+			$this->id = $id;
 		// Update tags
 		Tag::clearForObject($this, "mention");
 		preg_match_all("/\@([a-zA-Z0-9]+)/", $this->body, $out);
@@ -198,7 +209,44 @@ class Tag{
 		echo $sql;
 		query_database($sql);
 	}
+
+	public function to_array($includeBlob = false){
+		$o = array(
+			"type" => $this->type,
+			"text" => $this->text,
+			"blob_id" => $this->_link
+		);
+		if($includeBlob)
+			$o['blob'] = $this->link()->to_array();
+		return $o;
+	}
 	
+	public static function getAppearances($tagText = '', $tagType=''){
+		$data = get_data('tags', array('type' => $tagType, 'text' => $tagText));
+		$r = array();
+		foreach($data as $t){
+			$i = new Tag();
+			$i->type = $t['type'];
+			$i->text = $t['text'];
+			$i->_link = $t['link'];
+			$r[] = $i;
+		}
+		return $r;
+	}
+
+	public static function getTags(){
+		$sql = "SELECT * FROM tags GROUP BY text, type";
+		$data = query_database($sql);
+		$r = array();
+		foreach($data as $tag){
+			$r[] = array(
+				"type" => $tag['type'],
+				"text" => $tag['text']
+			);
+		}
+		return $r;
+	}	
+
 	/**
 	 * Commits the object to the database
 	 */
@@ -210,4 +258,14 @@ class Tag{
 		));
 		$this->_saved = true;
 	}
+}
+
+class Error_404{
+	public function render(){
+		
+	}
+}
+
+function get_url(){
+	return "http://${_SERVER['HTTP_HOST']}${_SERVER['PHP_SELF']}?${_SERVER['QUERY_STRING']}";
 }

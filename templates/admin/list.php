@@ -7,21 +7,28 @@
 	</form>
 	<?php } ?>
 </div>
-<table>
+<table class="box">
 	<tr>
 		<?php foreach($page_data['headers'] as $k => $header){
 			?><th><?php echo $header; ?></th><?php
 		} ?>
 		<th>Actions</th>
 	</tr>
-	<?php foreach($data as $row){ ?>
+	<?php foreach($data as $row){ $row = (array) $row; ?>
 	<tr>
 		<?php foreach($page_data['headers'] as $k => $header){ ?>
-			<td><?php echo $row->$k; ?></td>
+			<td><?php echo $row[$k]; ?></td>
 		<?php } ?>
 		<td>
 		<?php foreach($page_data['item_actions'] as $k => $v) { ?>
-			<a href="<?php echo str_replace("$1", $row->id, $v); ?>">
+			<?php
+				if(is_callable($v)){
+					$url = $v($row);
+				} else{
+					$url = str_replace("$1", $row['id'], $v);
+				}
+			?>
+			<a href="<?php echo $url; ?>">
 				<?php echo $k; ?>
 			</a>
 		<?php } ?>

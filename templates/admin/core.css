@@ -5,55 +5,44 @@ body{
 	margin: 0;
 	background: #EEF3F8;
 }
+.w980{ margin: 0 auto; width: 980px }
 .most{ width: 80%; }
 .left{ float: left; }
-#date-input select{
-	border: none;
-	background: transparent;
-	position: relative;
-	left: 15px;
-	color: #fff;
-	width: 70px;
-	-webkit-appearance: none;
-}
+.right{ float: right; }
 .hide{ display: none }
-#date-input #day{
-	top: 10px;
-	font-size: 25px;
-}
 .pad10{ padding: 5px; }
 .clear{ clear: both; }
-#date-input{
-	float: left;
-	background: url(res/Bookmark-item.png);
-	width: 100px;
-	height: 115px;
-	margin-top: -10px; 
-}
 th{ padding: 0 20px; }
-.centrebox, table, .box{
+.centrebox, .box{
 	margin: 10px;
+}
+.centrebox, .box, .box-nopad{
 	background: #fff;
 	border: 1px solid #ccc;
 	padding: 10px;
 	border-radius: 5px 5px;	
 }
 .inline{ display: inline }
-.left-col{ width: 60%; }
-.right-col{ width: 30%; }
+.left-col{ width: 588px; }
+.right-col{ width: 294px; }
 .left-col, .right-col{float:left}
 .reset{clear:both}
 .centrebox{
 	margin: 80px auto;
 	width: 460px;
 }
-.title{
-	font-size: 30px;
-}
-input[type=text], input[type=password]{
+.title{ font-size: 30px; }
+.subtitle{ font-size: 20px }
+.small{ font-size: 75% !important; }
+.smallinput{ font-size: 12px !important; width: default !important; }
+input[type=text], input[type=password], select{
 	padding: 6px;
 	margin: 6px 0px;
 	border: 1px solid #999;
+}
+.toolbar img{ padding: 5px; border: 1px solid #fff; }
+.toolbar img:hover{ background: #ccc; border: 1px solid #999; }
+input[type=text], input[type=password]{
 	width: 100%;
 	font-size: 20px;
 }
@@ -70,7 +59,7 @@ input[type=text], input[type=password]{
 	border: #ff3300;
 	background: #ff9966;
 }
-body > div, body > form > div{ padding: 10px; }
+#wcontent > div, body > form > div, body>div{ padding: 10px; }
 .headerbox{
 	background: #006699;
 	color: #fff;

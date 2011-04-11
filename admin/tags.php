@@ -3,8 +3,23 @@
 require "../framework/core.php";
 require "../framework/auth.php";
 
-class AdminListPage extends AdminPage{
+function get_tag_url($in){
+	return "view-tag.php?tag=${in['text']}&type=${in['type']}";
+}
+
+class AdminTagListPage extends AdminPage{
 	public $template = "admin/list.php";
+	public $page_data = array(
+		'title' => "Tags",
+		'global_actions' => array( ),
+		'item_actions' => array(
+			"View" => get_tag_url
+		),
+		'headers' => array(
+			"type" => "Type",
+			"text" => "Name"
+		)
+	);
 
 	public function onPreRender(){
 		parent::onPreRender();
@@ -14,22 +29,13 @@ class AdminListPage extends AdminPage{
 		if(!$type)
 			$type = Blob;
 		$get_type = $_GET['type'];
-		$this->page_data = array(
-			'title' => ucwords($_GET['type'] . "s"),
-			'global_actions' => array(
-				"New " . $uc => "blob-editor.php?type=$get_type"
-			),
-			'item_actions' => array(
-				"Edit " . $uc => "blob-editor.php?blob=$1"
-			),
-			'headers' => $type::get_list_headers()
-		);
+		
 	}
 	
 	public function fetchData(){
-		return Blob::fetchBlobs($_GET['from'], $_GET['type']);
+		return Tag::getTags();
 	}
 }
 
-$page = new AdminListPage();
+$page = new AdminTagListPage();
 $page->render();

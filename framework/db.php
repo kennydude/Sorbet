@@ -66,6 +66,7 @@ function put_data($table, $data){
 function get_data($table, $filters = array(), $start=-1, $end=-1){
 	$sql = "SELECT * FROM $table";
 	$en_filters = false;
+	$i = 1;
 	foreach($filters as $field => $filter){
 		if($en_filters == false){
 			$en_filters = true;
@@ -76,6 +77,9 @@ function get_data($table, $filters = array(), $start=-1, $end=-1){
 			$sql .= $filter->sql();
 		else 
 			$sql .="='".e($filter)."'";
+		if($i < count($filters))
+			$sql .= " AND ";
+		$i++;
 	}
 	if($start != -1){
 		$sql .= " LIMIT $start,";

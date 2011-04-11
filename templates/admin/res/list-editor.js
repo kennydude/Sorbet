@@ -6,9 +6,9 @@ $(document).ready(function(){
 	$(".listTemplate *").attr("name", null);
 	$("#addAnotherBox").show();
 	var list_number = 0;
-	$("#addAnotherItem").click(function(){
-		clone = $(".listTemplate").clone().removeClass("listTemplate").
-			insertBefore($("#addAnotherBox")).show();
+	$("#addAnotherItem").bind('click', function(){
+		clone = $("<div>").html($(".listTemplate").html()).addClass("box").show();
+		$("#addAnotherBox").before(clone);
 		list_number = list_number + 1;
 		$("*", clone).each(function(){
 			$(this).attr("name", $(this).attr("data-name-template").replace("{x}", list_number));

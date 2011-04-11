@@ -9,6 +9,7 @@ class AdminEditorPage extends AdminPage{
 	);
 	
 	public function onPreRender(){
+		parent::onPreRender();
 		if($_GET['type']){
 			$content_types = get_content_types();
 			$type = $content_types[$_GET['type']];
@@ -27,6 +28,7 @@ class AdminEditorPage extends AdminPage{
 	public function postHandler($data){
 		$data->title = $_POST['title'];
 		$data->body = $_POST['body'];
+		$data->status = $_POST['status'];
 		$data->url_slug = $_POST['url_slug'];
 		if($_GET['type'])
 			$data->content_type = $_GET['type'];
@@ -34,10 +36,17 @@ class AdminEditorPage extends AdminPage{
 		$data->commit();
 		$data->handlePostPostCommit($_POST);
 		put_message("Post was saved");
-		header("Location: blob-editor.php?blob=" . $data->id);
-		exit();
+		$url = get_url();
+		if(strpos($url, "blob=")!=false)
+			$url = $url;
+		else if(strpos($url, "?")!=false)
+			$url .= '&blob=' . $data->id;
+		else
+			$url .= '?blob=' . $data->id;
+		header("Location: $url");
 	}
 }
-
-$page = new AdminEditorPage();
-$page->render();
+if(!defined("SBE")){
+	$page = new AdminEditorPage();
+	$page->render();
+}
