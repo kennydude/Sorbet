@@ -78,7 +78,12 @@ class Blob{
 	public static function fetchBlobs($from, $type="post",$filters=array()){
 		if(!$from)
 			$from = 0;
-		$data = get_data('blobs', array_merge( $filters, array('content_type'=>$type) ), $from, $from+10);
+		$data = get_data('blobs',
+			array_merge( $filters, array(
+				'content_type' => $type,
+				new LimitFilter($from, $from+10)
+			))
+		);
 		$result = array();
 		foreach($data as $blob){
 			$result[] = static::arrayToBlob($blob);
@@ -235,8 +240,11 @@ class Tag{
 	}
 
 	public static function getTags(){
-		$sql = "SELECT * FROM tags GROUP BY text, type";
-		$data = query_database($sql);
+		$data = get_data("tags", array(
+			new GroupByFilter(array("text", "type"))
+		));
+		//$sql = "SELECT * FROM tags GROUP BY text, type";
+		//$data = query_database($sql);
 		$r = array();
 		foreach($data as $tag){
 			$r[] = array(
@@ -257,12 +265,6 @@ class Tag{
 			"text" => $this->text
 		));
 		$this->_saved = true;
-	}
-}
-
-class Error_404{
-	public function render(){
-		
 	}
 }
 

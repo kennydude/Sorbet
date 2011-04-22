@@ -38,6 +38,7 @@ class Page{
 	public function onPostRender(){}
 	
 	public function render(){
+		global $settings;
 		if($this->isDataPage)
 			$this->data = $this->fetchData();
 			if($_POST)
@@ -58,7 +59,7 @@ class Page{
 		} else{
 			$data = $this->data;
 			$page_data = $this->page_data;
-			$coredir = "../templates/"; // TODO: Have this to work properly
+			$coredir = $settings->website_root."templates/"; // TODO: Have this to work properly
 			if(!is_null($this->masterPage)){
 				$template = "../templates/" . $this->template;
 				require_once("../templates/" . $this->masterPage);
@@ -92,4 +93,40 @@ class AdminPage extends Page{
 			header("Location: login.php"); exit;
 		}
 	}
+}
+
+/**
+ * Created to show an error to the user
+ * @author kennydude
+ *
+ */
+class Error_Page extends Page{
+	public function fetchData(){
+		return array(
+			"error" => $this->errorNo,
+			"reason" => $this->reason
+		);
+	}
+	public $errorNo = "666 NOT DEFINED";
+	public function __construct($reason = ""){
+		$this->reason = $reason;
+		header("HTTP/1.1 " . $this->errorNo, true);
+		header("Status: ". $this->errorNo, true);
+		$this->render();
+		exit();
+	}
+}
+
+class Error_404 extends Error_Page{
+	public $errorNo = "404 Not Found";
+	public $template = "error/404.php";
+}
+
+class Error_503 extends Error_Page{
+	public $errorNo = "503 Service Unavailable";
+	public $template = "error/503.php";
+}
+
+class Error_Misconfig extends Error_503{
+	public $template = "error/misconfig.php";
 }

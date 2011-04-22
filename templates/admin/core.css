@@ -72,3 +72,20 @@ hr{
 	border: none;
 	border-top: 1px solid #999;
 }
+/* why do this? Stop scrollbars if we want to multi-task! */
+@media (max-width: 980px) { 
+	.centrebox, .box, .box-nopad{
+		padding: 10px;
+		margin: 3px;
+	}
+	.w980{ margin: 0; width: auto; }
+	#wcontent > div, body > form > div, body>div{
+		padding: 3px;
+	}
+	.headerbox{ font-size: 20px }
+	.left-col, .right-col{ width: auto; float: none; }
+	.centrebox{
+		width: auto;
+		margin: 0;
+	}
+}

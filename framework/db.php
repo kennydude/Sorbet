@@ -63,29 +63,80 @@ function put_data($table, $data){
  * @param integer $start number to start
  * @param integer $end number to end with
  */
-function get_data($table, $filters = array(), $start=-1, $end=-1){
+function get_data($table, $filters = array()){
 	$sql = "SELECT * FROM $table";
 	$en_filters = false;
 	$i = 1;
-	foreach($filters as $field => $filter){
-		if($en_filters == false){
-			$en_filters = true;
-			$sql .= " WHERE ";
+	$whereFilters = array();
+	$endFilters = array();
+	foreach($filters as $field => $filter){ // Sort the filters
+		if(is_object($filter) && $filter->atEnd == true)
+			$endFilters[] = $filter;
+		else
+			$whereFilters[$field] = $filter;
+	}
+	if(!empty($whereFilters)){
+		$sql .= " WHERE ";
+		$i = 1;
+		foreach($whereFilters as $field => $filter){
+			if(is_string($field))
+				$sql .= "`".$field."`";
+			if(is_object($filter))
+				$sql .= $filter->sql();
+			else
+				$sql .="='".e($filter)."'";
+			if($i < count($whereFilters))
+				$sql .= " AND ";
+			$i++;
 		}
-		$sql .= "`".$field."`";
-		if(is_object($filter))
-			$sql .= $filter->sql();
-		else 
-			$sql .="='".e($filter)."'";
-		if($i < count($filters))
-			$sql .= " AND ";
-		$i++;
 	}
-	if($start != -1){
-		$sql .= " LIMIT $start,";
-		if($end == -1)
-			$end = $start + 10;
-		$sql .= $end;
+	foreach($endFilters as $filter){
+		$sql .= $filter->sql();
 	}
+	$sql .= $end;
 	return query_database($sql);
+}
+
+/**
+ * Base class for filters
+ * @author kennydude
+ *
+ */
+class DatabaseFilter{
+	public $atEnd = true;
+	/**
+	 * Returns the sql to add (mysql)
+	 */
+	public function sql(){}
+}
+
+/**
+ * GROUP BY ($by)
+ * @author kennydude
+ *
+ */
+class GroupByFilter{
+	public $atEnd = true;
+	function __construct($by) {
+		$this->_by = $by;
+	}
+	public function sql(){
+		return " GROUP BY ".implode($this->_by, ",");
+	}	
+}
+
+/**
+ * LIMIT $begin, $end
+ * @author kennydude
+ *
+ */
+class LimitFilter{
+	public $atEnd = true;
+	public function __construct($begin, $end){
+		$this->_begin = $begin;
+		$this->_end = $end;
+	}
+	public function sql(){
+		return " LIMIT " . $this->_begin . ", " . $this->_end;
+	}
 }

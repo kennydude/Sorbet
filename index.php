@@ -2,6 +2,13 @@
 // Sorbet index file
 require "framework/core.php";
 
+class HomePage extends Page{
+	public $masterPage = "main.php";
+	public function fetchData(){
+		// TODO!
+	}
+}
+
 /**
  * Shows a blob
  * @author kennydude
@@ -22,7 +29,7 @@ class BlobViewPage extends Page{
 
 if($_GET['u']){
 	$page = new BlobViewPage();
-	$page->render();
 } else{
-	die("TODO");
+	$page = new HomePage();
 }
+$page->render();
