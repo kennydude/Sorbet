@@ -3,7 +3,7 @@
 	<input type="text" name="title" value="<?php echo $data->title; ?>" />
 	<span class="clear"></span>
 	<div class="toolbar"><!-- Javascript toolbar!!!! --></div>
-	<textarea name="body" style="width:100%; min-height:400px;padding:6px;"><?php echo $data->body; ?></textarea>
+	<textarea name="body" id="body" style="width:100%; min-height:400px;padding:6px;"><?php echo $data->body; ?></textarea>
 	<input type="submit" value="Save Post" />
 </div>
 <div id="main-side" class="right-col">

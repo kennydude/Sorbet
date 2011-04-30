@@ -50,6 +50,7 @@ class Page{
 		if($_GET['format']){ // Output as JSON etc
 			switch($_GET['format']){
 				case "json":
+					header("Content-Type:application/json; charset=utf-8");
 					if(is_object($this->data))
 						echo json_encode($this->data->to_array());
 					else

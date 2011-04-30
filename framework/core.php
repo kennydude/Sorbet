@@ -5,6 +5,7 @@ require_once("post.php");
 require_once("./list.php");
 require_once("mvc.php");
 require_once("./page.php");
+require_once("file-storage.php");
 
 require_once("settings.php");
 $settings = new Settings();
@@ -16,7 +17,8 @@ function get_content_types(){
 	$base = array(
 		"post" => Post,
 		"list" => BlobList,
-		"page" => ContentPage
+		"page" => ContentPage,
+		"file" => File
 	);
 	return $base;
 }

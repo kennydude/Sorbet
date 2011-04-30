@@ -1,7 +1,7 @@
 <?php
 // Sorbet base. Contains core API
 require_once("db.php");
-require_once("markdown.php");
+require_once("markdown_extra.php");
 
 /**
  * Base class for Sorbet
@@ -48,7 +48,9 @@ class Blob{
 	 * Return the body as HTML and not Markdown
 	 */
 	public function body_html(){
-		$o = Markdown($this->body);
+		$markdown = new SorbetMarkdown();
+		$o = $markdown->transform($this->body);
+		// Extra from markdown
 		$o = preg_replace("/\@([a-zA-Z0-9]+)/", "@<a href='".$this->mention_url."'>$1</a>", $o);
 		return $o;
 	}

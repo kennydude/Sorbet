@@ -5,6 +5,17 @@ body{
 	margin: 0;
 	background: #EEF3F8;
 }
+.cb.selected{ border-color:#ccc; }
+.cb{
+	float: right;
+	width:18px;
+	border: 2px solid #000;
+	height:18px;
+	background:#000;
+	border-radius:5px 5px;
+	margin: 5px;
+	cursor: hand;
+}
 .w980{ margin: 0 auto; width: 980px }
 .most{ width: 80%; }
 .left{ float: left; }
@@ -40,7 +51,8 @@ input[type=text], input[type=password], select{
 	margin: 6px 0px;
 	border: 1px solid #999;
 }
-.toolbar img{ padding: 5px; border: 1px solid #fff; }
+.toolbar img.selected{ background: #ccc; }
+.toolbar img{ padding: 5px; border: 1px solid #fff; cursor: hand; }
 .toolbar img:hover{ background: #ccc; border: 1px solid #999; }
 input[type=text], input[type=password]{
 	width: 100%;
@@ -72,6 +84,24 @@ hr{
 	border: none;
 	border-top: 1px solid #999;
 }
+.wraptocenter {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.wraptocenter * {
+    vertical-align: middle;
+}
+/*\*//*/
+.wraptocenter {
+    display: block;
+}
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+    width: 1px;
+}
+/**/
 /* why do this? Stop scrollbars if we want to multi-task! */
 @media (max-width: 980px) { 
 	.centrebox, .box, .box-nopad{

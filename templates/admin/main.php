@@ -7,18 +7,20 @@
 	</head>
 	<body>
 		<div class="headerbox"><div class="w980">
-			<?php $sep = '<span class="sep">&nbsp;</span>'; ?>
-			<a href="index.php">Sorbet</a>
-			<?php echo $sep; ?>
-			<a href="list.php?type=page">Pages</a>
-			<?php echo $sep; ?>
-			<a href="list.php?type=list">Lists</a>
-			<?php echo $sep; ?>
-			<a href="list.php?type=post">Posts</a>
-			<?php echo $sep; ?>
-			<a href="tags.php">Tags</a>
-			<?php echo $sep; ?>
-			<a href="settings.php">Settings</a>
+			<?php if(!function_exists("admin_header")) {?>
+				<?php $sep = '<span class="sep">&nbsp;</span>'; ?>
+				<a href="index.php">Sorbet</a>
+				<?php echo $sep; ?>
+				<a href="list.php?type=page">Pages</a>
+				<?php echo $sep; ?>
+				<a href="list.php?type=list">Lists</a>
+				<?php echo $sep; ?>
+				<a href="list.php?type=post">Posts</a>
+				<?php echo $sep; ?>
+				<a href="tags.php">Tags</a>
+				<?php echo $sep; ?>
+				<a href="settings.php">Settings</a>
+			<?php } else{ admin_header(); } ?>
 		</div></div>
 		<div id="wcontent" class="w980">
 			<?php foreach(get_messages() as $message) { ?>
