@@ -22,6 +22,10 @@ class Blob{
 	public $id;
 	public $mention_url = "?tag=$1&type=mention";
 	
+	public function __construct(){
+		$this->created = "now";
+	}
+	
 	/**
 	 * Overriding this allows the object to handle more post values than
 	 * automatically set by blob-editor.php. However, $id may not be set
@@ -77,15 +81,13 @@ class Blob{
 	/***
 	 * 
 	 */
-	public static function fetchBlobs($from, $type="post",$filters=array()){
+	public static function fetchBlobs($from, $type=NULL,$filters=array()){
 		if(!$from)
 			$from = 0;
-		$data = get_data('blobs',
-			array_merge( $filters, array(
-				'content_type' => $type,
-				new LimitFilter($from, $from+10)
-			))
-		);
+		$filters[] = new LimitFilter($from, $from+10);
+		if($type != NULL)
+			$filters['content_type'] == $type;
+		$data = get_data('blobs', $filters);
 		$result = array();
 		foreach($data as $blob){
 			$result[] = static::arrayToBlob($blob);
@@ -142,7 +144,7 @@ class Blob{
 		return array(
 			"title" => $this->title,
 			"body" => $this->body,
-			"created" => time(),
+			"created" => $this->created,
 			"content_type" => $this->content_type,
 			"id" => $this->id,
 			"parent" => $this->parent,
@@ -155,6 +157,27 @@ class Blob{
 	 * Saves the object to the database
 	 */
 	public function commit(){
+		if($this->url_slug == ""){ // automatically generate one
+			$oturl = strtolower($this->title); // lowercase
+			$oturl = preg_replace("[^A-Za-z0-9]", "", $oturl ); // remove non-alpha
+			$oturl = str_replace(" ", "_", $oturl); // Space to _
+			$turl = $oturl;
+			$okay = false;
+			$attempt = 1;
+			while($okay == false && $attempt < 5){ // 5 Attempts or fail!
+				$tdata = self::fetchBlobs(0, NULL, array("url_slug" => $turl));
+				if(empty($tdata)){
+					$okay = true;
+				} else{
+					$turl = $oturl . $attempt;
+					$attempt += 1;
+				}
+			}
+			if($okay == false){
+				$turl = "temp" + time(); // Hard way
+			}
+			$this->url_slug = $turl;
+		}
 		put_data('blobs', $this->to_array());
 		$id = mysql_insert_id();
 		if($id != 0)
@@ -213,7 +236,7 @@ class Tag{
 		$sql = "DELETE FROM tags WHERE `link`='".e($id)."'"; // TODO: Move to db.php
 		if(!is_int($type))
 			$sql .= " AND `type`='".e($type)."'";
-		echo $sql;
+		// echo $sql;
 		query_database($sql);
 	}
 

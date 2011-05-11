@@ -3,11 +3,11 @@
  */
 var tool, context;
 $(document).ready(function(){
-	tool = new tool_pencil();
 	canvas = $("#pad")[0];
 	/* not for protection, just to remove that annoyance! */
 	disableSelection(document.body);
 	context = canvas.getContext("2d");
+	tool = new tool_pencil();
 	document.addEventListener('mouseup', ev_canvas, false);
 	canvas.addEventListener('mousedown', ev_canvas, false);
 	canvas.addEventListener('mousemove', ev_canvas, false);
@@ -19,7 +19,23 @@ $(document).ready(function(){
 		$(this).addClass("selected");
 		context.strokeStyle = $(this).css("background");
 	});
+	$("#penciltool").bind('click',function(){ var tool = tool_pencil(); });
+	$("#brushtool").bind('click', function(){ var tool = tool_brush(); });
+	$("#submit").bind('click', function(){
+		// TODO: Move this to submit via form
+		console.log(canvas.toDataURL('image/png'));
+	});
 });
+
+function tool_brush(){
+	pencil = tool_pencil();
+	context.lineCap = "round";
+	context.lineJoin = "bevel";
+	context.lineWidth = 10;
+	un();
+	$("#brushtool").attr("class", "selected");
+	return pencil;
+}
 
 function tool_pencil(){
 	this.mousemove = function (ev) {
@@ -38,9 +54,15 @@ function tool_pencil(){
 			tool.started = false;
 		}
 	};
+	context.lineCap = "butt";
+	context.lineJoin = "miter";
+	context.lineWidth = 1;
 	this.started = false;
+	un();
 	$("#penciltool").attr("class", "selected");
 }
+
+function un(){ $(".toolbar img").removeClass("selected"); };
 
 function ev_canvas(ev){
 	if (ev.layerX || ev.layerX == 0) { // Firefox

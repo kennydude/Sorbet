@@ -37,6 +37,7 @@ class Page{
 	public function onPreRender(){}
 	public function onPostRender(){}
 	
+	
 	public function render(){
 		global $settings;
 		if($this->isDataPage)
@@ -58,6 +59,14 @@ class Page{
 					break;
 			}
 		} else{
+			/**
+			 * Use for inside templates mainly to include other templates
+			 * @param unknown_type $file
+			 */
+			function getTemplate($file){
+				$template = "../templates/" . $file;
+				return $template;
+			}
 			$data = $this->data;
 			$page_data = $this->page_data;
 			$coredir = $settings->website_root."templates/"; // TODO: Have this to work properly

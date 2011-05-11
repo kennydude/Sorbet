@@ -25,18 +25,25 @@ class Settings{
 	
 	public static function prettyNames(){
 		return array(
-			"site_title" => "Site Title",
-			"mysql_username" => "MySQL username",
-			"mysql_password" => "MySQL password",
-			"mysql_host" => "MySQL host",
-			"mysql_database" => "MySQL database"
+			"Site Settings" => array(
+				"site_title" => "Site Title",
+				"debug" => "Sorbet Debug Mode"
+			),
+			"Database Settings" => array(
+				"mysql_username" => "MySQL username",
+				"mysql_password" => "MySQL password",
+				"mysql_host" => "MySQL host",
+				"mysql_database" => "MySQL database",
+			)
 		);
 	}
 	
 	public function getPrettyNames(){
 		$r = array();
-		foreach(Settings::prettyNames() as $key => $value){
-			$r[$key] = array("name" => $value, "value" => $this->__get($key));
+		foreach(Settings::prettyNames() as $group => $values){
+			foreach($values as $key => $value){
+				$r[$group][$key] = array("name" => $value, "value" => $this->__get($key));
+			}
 		}
 		return $r;
 	}

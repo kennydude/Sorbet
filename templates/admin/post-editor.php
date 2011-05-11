@@ -11,12 +11,12 @@
 		<span class="subtitle">Post options</span><br/>
 		<hr/>
 		Url Slug:<br/>
-		<input type="text" name="url_slug" value="<?php echo $data->url_slug; ?>" /><br/>
+		<input type="text" placeholder="automatic" name="url_slug" value="<?php echo $data->url_slug; ?>" /><br/>
 		Date posted:<br/>
-		<input type="text" style="width:30px" class="smallinput" id="day" maxlength="2" value="<?php echo date('j', strtotime($data->created)); ?>" />
+		<input type="text" style="width:30px" class="smallinput" name="date[day]" id="day" maxlength="2" value="<?php echo date('j', strtotime($data->created)); ?>" />
 		&nbsp;/&nbsp;
 		<?php $m = date('n', strtotime($data->created)); ?>
-		<select id="month">
+		<select name="date[month]" id="month">
 			<option value="1" <?php if($m==1){ echo "selected='selected'"; } ?>>January</option>
 			<option value="2" <?php if($m==2){ echo "selected='selected'"; } ?>>February</option>
 			<option value="3" <?php if($m==3){ echo "selected='selected'"; } ?>>March</option>
@@ -31,10 +31,12 @@
 			<option value="12" <?php if($m==12){ echo "selected='selected'"; } ?>>December</option>
 		</select>
 		&nbsp;/&nbsp;
-		<input type="text" class="smallinput" style="width:50px" id="year" value="<?php echo date('Y', strtotime($data->created)); ?>" /><br/>
+		<input type="text" name="date[year]" class="smallinput" style="width:50px" id="year" value="<?php echo date('Y', strtotime($data->created)); ?>" /><br/>
 		Time posted:<br/>
-		<input type="text" style="width:30px" class="smallinput" id="day" maxlength="2" value="<?php echo date('G', strtotime($data->created)); ?>" /> : 
-		<input type="text" style="width:30px" class="smallinput" id="day" maxlength="2" value="<?php echo date('i', strtotime($data->created)); ?>" /><br/>
+		<input type="text" name="date[hour]" style="width:30px" name="hour" class="smallinput" id="hour" maxlength="2" value="<?php echo date('G', strtotime($data->created)); ?>" /> : 
+		<input type="text" name="date[min]" style="width:30px" name="min" class="smallinput" id="min" maxlength="2" value="<?php echo date('i', strtotime($data->created)); ?>" />
+		&nbsp;<button type="button" class="hide smallinput" id="time-to-now">Set To Now</button>
+		<br/>
 		Status:<br/>
 		<?php $pub = $data->status; ?>
 		<select name="status">

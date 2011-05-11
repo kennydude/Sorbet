@@ -2,6 +2,15 @@
  * Post editor
  */
 $(document).ready(function(){
+	$("#time-to-now").removeClass("hide").one("click", function(){
+		d = new Date();
+		$("#day").val(d.getDate());
+		$("#month").val(d.getMonth());
+		$("#year").val(d.getFullYear());
+		$("#hour").val(d.getHours());
+		$("#min").val(d.getHours());
+		return false;
+	});
 	var toolbar = [
      { "icon" : "image.png", "tooltip" : "Insert image", "popup" : "popup/insert-media.php" },
      { "icon" : "picture--pencil.png", "tooltip" : "Insert doodle", "popup" : "popup/insert-doodle.php" }

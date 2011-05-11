@@ -24,6 +24,9 @@ function ae($i){
  * @param string $sql
  */
 function query_database($sql){
+	global $settings;
+	if($_GET['debug'] == "true" && $settings->debug == true)
+		echo $sql;
 	$r = @mysql_query($sql);
 	if($r != false){
 		$result = array();
@@ -110,19 +113,29 @@ class DatabaseFilter{
 	public function sql(){}
 }
 
+class LessThanFilter extends DatabaseFilter{
+	public $atEnd = false;
+	function __construct($by) {
+		$this->_by = $by;
+	}
+	public function sql(){
+		return "< '" . $this->_by ."'";
+	}
+}
+
 /**
  * GROUP BY ($by)
  * @author kennydude
  *
  */
-class GroupByFilter{
+class GroupByFilter extends DatabaseFilter{
 	public $atEnd = true;
 	function __construct($by) {
 		$this->_by = $by;
 	}
 	public function sql(){
 		return " GROUP BY ".implode($this->_by, ",");
-	}	
+	}
 }
 
 /**
@@ -130,7 +143,7 @@ class GroupByFilter{
  * @author kennydude
  *
  */
-class LimitFilter{
+class LimitFilter extends DatabaseFilter{
 	public $atEnd = true;
 	public function __construct($begin, $end){
 		$this->_begin = $begin;

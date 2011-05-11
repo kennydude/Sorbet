@@ -4,8 +4,24 @@ require "framework/core.php";
 
 class HomePage extends Page{
 	public $masterPage = "main.php";
+	public $title = "Home Page";
+	
+	public function onPreRender(){
+		global $settings;
+		switch($settings->home_page){
+			case "posts":
+				$this->template = "posts.php";
+				break;
+		}
+	}
+	
 	public function fetchData(){
-		// TODO!
+		global $settings;
+		switch($settings->home_page){
+			case "posts":
+				return Post::getPosts(0, Post::publicFilters());
+				break;
+		}
 	}
 }
 

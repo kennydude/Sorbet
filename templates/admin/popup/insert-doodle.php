@@ -10,9 +10,10 @@
 	</div>
 <?php $t = "$coredir/admin/res/"; ?>
 	<img id="penciltool" src="<?php echo $t; ?>pencil.png" title="Pencil" />
+	<img id="brushtool" src="<?php echo $t; ?>brush.png" title="Brush" />
 	<img id="clearall" src="<?php echo $t; ?>cross.png" title="Clear All" />
 </div>
-<div class="container" style="position: relative">
+<div class="container" style="position: relative;cursor:hand">
 	<canvas id="pad" style="border: 1px solid #000" height=270 width=720>
 		Please update your web browser! We need Canvas support (no icky flash!)
 	</canvas>

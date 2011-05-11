@@ -30,11 +30,17 @@ class AdminEditorPage extends AdminPage{
 		$data->body = $_POST['body'];
 		$data->status = $_POST['status'];
 		$data->url_slug = $_POST['url_slug'];
+		$ptime = $_POST['date'];
+		$date = new DateTime();
+		$date->setDate($ptime['year'], $ptime['month'], $ptime['day']);
+		$date->setTime($ptime['hour'], $ptime['min']);
+		$data->created = $date->format('Y-m-d H:i:s');
 		if($_GET['type'])
 			$data->content_type = $_GET['type'];
 		$data->handlePostPreCommit($_POST);
 		$data->commit();
 		$data->handlePostPostCommit($_POST);
+		
 		put_message("Post was saved");
 		$url = get_url();
 		if(strpos($url, "blob=")!=false)
@@ -43,7 +49,11 @@ class AdminEditorPage extends AdminPage{
 			$url .= '&blob=' . $data->id;
 		else
 			$url .= '?blob=' . $data->id;
+		global $settings;
+		if($settings->debug == true && $_GET['debug'] == true)
+			return;
 		header("Location: $url");
+		exit(); // No need to give db more load ;)
 	}
 }
 if(!defined("SBE")){
