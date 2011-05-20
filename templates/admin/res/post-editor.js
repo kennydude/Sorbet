@@ -17,8 +17,8 @@ $(document).ready(function(){
     ];
 	for(var tool in toolbar){
 		tool = toolbar[tool];
-		item = $("<img>").attr("src", "/templates/admin/res/" + tool.icon).bind('click',function(){
-			 window.open($(this).attr("data-popup"), 1, 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=760,height=450,left = 260,top = 287');
+		item = $("<img>").attr("src", "/templates/admin/res/" + tool.icon).bind('click',function(x){
+			window.open($(this).attr("data-popup"), 1, 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=760,height=450,left = 260,top = 287');
 		});
 		item.attr("title", tool.tooltip + "").attr("data-popup", tool.popup);
 		$(".toolbar").append(item);

@@ -10,6 +10,8 @@ class AdminEditorPage extends AdminPage{
 	
 	public function onPreRender(){
 		parent::onPreRender();
+		if($this->preview == true)
+			return;
 		if($_GET['type']){
 			$content_types = get_content_types();
 			$type = $content_types[$_GET['type']];

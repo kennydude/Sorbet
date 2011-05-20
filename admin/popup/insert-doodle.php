@@ -2,7 +2,7 @@
 // Sorbet Administrator
 require "core.php";
 
-class AdminInsertMediaPage extends AdminPopupPage{
+class AdminInsertDoodlePage extends AdminPopupPage{
 	public $template = "admin/popup/insert-doodle.php";
 	
 	public function fetchData(){
@@ -10,9 +10,13 @@ class AdminInsertMediaPage extends AdminPopupPage{
 	}
 	
 	public function postHandler(){
-		
+		$file = new File();
+		$data = file_get_contents($_POST['doodle']);
+		$file->store_data("doodle.png", $data);
+		$this->template = "admin/popup/doodle-done.php";
+		return $file;
 	}
 }
 
-$page = new AdminInsertMediaPage();
+$page = new AdminInsertDoodlePage();
 $page->render();

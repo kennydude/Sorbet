@@ -13,8 +13,17 @@ class AdminUploadMediaPage extends AdminPage{
 	}
 	
 	public function postHandler(){
-		print_r( $_FILES );
-		// TODO: Add to file API to actually store these images!
+		foreach($_FILES as $file){
+			if ($file['error'] == 0) {
+				$sfile = new File();
+				$sfile->put_file($file);
+			}
+		}
+		put_message("Your files were uploaded");
+		if($_GET['popup'] == "true"){
+			header("Location: popup/insert-media.php");
+			exit();
+		} 
 	}
 }
 

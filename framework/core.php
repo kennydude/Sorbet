@@ -6,11 +6,18 @@ require_once("./list.php");
 require_once("mvc.php");
 require_once("./page.php");
 require_once("file-storage.php");
-
+require_once("embed.php");
 require_once("settings.php");
 $settings = new Settings();
 if($settings->settingsWorking == false){
 	new Error_Misconfig("Sorbet is not configured. Please navigate to /admin/installer.php");
+}
+
+function get_embed_types(){
+	$base = array(
+		"twitter.com" => TwitterEmbed
+	);
+	return $base;
 }
 
 function get_content_types(){

@@ -21,3 +21,9 @@
 <input type="submit" id="submit" value="Add" />
 </div>
 <script type="text/javascript" src="<?php echo $coredir; ?>/admin/res/insert-doodle.js"></script>
+<div id="sheet">
+	Please wait...
+</div>
+<form id="hiddenform" action="insert-doodle.php" method="post">
+<input type="hidden" name="doodle" id="data" />
+</form>

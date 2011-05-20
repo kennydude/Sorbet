@@ -2,8 +2,9 @@
 	<head>
 		<title>Sorbet Admin</title>
 		<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1, width=device-width">
-		<script type="text/javascript" src="<?php echo $coredir; ?>/admin/res/zepto.min.js"></script>
+		<script type="text/javascript" src="<?php echo $coredir; ?>/admin/res/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="<?php echo $coredir; ?>/admin/core.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo $coredir; ?>/core.css" />
 	</head>
 	<body>
 		<div class="headerbox"><div class="w980">

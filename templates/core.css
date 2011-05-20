@@ -1,0 +1,21 @@
+.wraptocenter {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+.wraptocenter * {
+    vertical-align: middle;
+}
+/*\*//*/
+.wraptocenter {
+    display: block;
+}
+.wraptocenter span {
+    display: inline-block;
+    height: 100%;
+    width: 1px;
+}
+/**/
+.wraptocenter img{
+	background: #fff;
+}

@@ -86,7 +86,7 @@ class Blob{
 			$from = 0;
 		$filters[] = new LimitFilter($from, $from+10);
 		if($type != NULL)
-			$filters['content_type'] == $type;
+			$filters['content_type'] = $type;
 		$data = get_data('blobs', $filters);
 		$result = array();
 		foreach($data as $blob){

@@ -42,16 +42,18 @@ class Page{
 		global $settings;
 		if($this->isDataPage)
 			$this->data = $this->fetchData();
-			if($_POST)
+			if($_POST || $_FILES)
 				$post_response = $this->postHandler($this->data);
 		else
-			if($_POST)
+			if($_POST || $_FILES)
 				$post_response = $this->postHandler();
 		$this->onPreRender();
 		if($_GET['format']){ // Output as JSON etc
 			switch($_GET['format']){
 				case "json":
 					header("Content-Type:application/json; charset=utf-8");
+					if($post_response)
+						$this->data = $post_response;
 					if(is_object($this->data))
 						echo json_encode($this->data->to_array());
 					else
@@ -64,17 +66,31 @@ class Page{
 			 * @param unknown_type $file
 			 */
 			function getTemplate($file){
-				$template = "../templates/" . $file;
-				return $template;
+				global $settings;
+				if(is_string($file))
+					$file = array($file);
+				$templates = array();
+				foreach($file as $f){
+					$templates = array(
+						"../themes/" . $settings->theme . "/$f",
+						"../templates/$f"
+					);	
+				}
+				if($_GET['debug'] == "true" && $settings->debug == true)
+					print_r($templates);
+				foreach($templates as $template){
+					if(file_exists($template))
+						return $template;
+				}
 			}
 			$data = $this->data;
 			$page_data = $this->page_data;
 			$coredir = $settings->website_root."templates/"; // TODO: Have this to work properly
 			if(!is_null($this->masterPage)){
-				$template = "../templates/" . $this->template;
-				require_once("../templates/" . $this->masterPage);
+				$template = getTemplate($this->template);
+				require_once(getTemplate($this->masterPage));
 			} else
-				require_once("../templates/". $this->template);
+				require_once(getTemplate($this->template));
 		}
 		$this->onPostRender();
 	}

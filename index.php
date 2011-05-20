@@ -1,6 +1,6 @@
 <?php
 // Sorbet index file
-require "framework/core.php";
+require_once( "framework/core.php" );
 
 class HomePage extends Page{
 	public $masterPage = "main.php";
@@ -43,9 +43,11 @@ class BlobViewPage extends Page{
 	}
 }
 
-if($_GET['u']){
-	$page = new BlobViewPage();
-} else{
-	$page = new HomePage();
+if(!defined("INCLUDE_INDEX")){
+	if($_GET['u']){
+		$page = new BlobViewPage();
+	} else{
+		$page = new HomePage();
+	}
+	$page->render();
 }
-$page->render();

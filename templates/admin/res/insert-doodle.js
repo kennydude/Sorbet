@@ -23,7 +23,9 @@ $(document).ready(function(){
 	$("#brushtool").bind('click', function(){ var tool = tool_brush(); });
 	$("#submit").bind('click', function(){
 		// TODO: Move this to submit via form
-		console.log(canvas.toDataURL('image/png'));
+		$("#sheet").css("display", "block");
+		$("#data").val(canvas.toDataURL('image/png'));
+		$("#hiddenform").submit();
 	});
 });
 
