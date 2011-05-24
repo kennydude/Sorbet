@@ -48,6 +48,10 @@ class Settings{
 		return $r;
 	}
 	
+	public function save(){
+		file_put_contents("../settings.json", json_encode($this->intSettings));
+	}
+	
 	public function to_array(){
 		return $this->intSettings;
 	}

@@ -42,10 +42,17 @@ session_start();
 function put_message($message){
 	$_SESSION['messages'][] = $message;
 }
+function put_temp_message($message){
+	global $msgs;
+	$msgs[] = $message;
+}
 function get_messages(){
+	global $msgs;
 	$o = $_SESSION['messages'];
+	if(!is_array($o))
+		$o = array();
+	if(is_array($msgs))
+		$o = array_merge($o, $msgs);
 	unset($_SESSION['messages']);
-	if(empty($o))
-		return array();
 	return $o;
 }

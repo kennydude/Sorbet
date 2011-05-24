@@ -1,3 +1,11 @@
+<?php
+// Call if exists
+function cie($name){
+	if(function_exists($name)){
+		call_user_func($name);
+	}
+}
+?>
 <html>
 	<head>
 		<title>Sorbet Admin</title>

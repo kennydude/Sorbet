@@ -1,17 +1,14 @@
-<div class="title">Settings</div>
-<div class="box">
-	<form method="post" action="settings.php">
-	<table>
-		<?php foreach($data as $group => $settings) { ?>
-		<tr>
-			<th colspan="2"><?php echo $group; ?></th>
-		<?php foreach($settings as $key => $setting) { ?>
-		<tr>
-			<td><?php echo $setting['name']; ?></td>
-			<td><input type="text" name="<?php echo $key; ?>"
-				value="<?php echo $setting['value']; ?>" /></td>
-		</tr>
-		<?php } } ?>
-	</table>
-	</form>
-</div>
+<?php
+function q($x){
+	if($_GET['tab'] == $x)
+		echo 'class="selected"';
+}
+function mid_header(){
+	?>
+	<div class="tabs">
+		<a <?php q("main"); ?> href="?tab=main">Main</a>
+		<a <?php q("themes"); ?> href="?tab=themes">Themes</a>
+	</div>
+	<?php
+}
+include "main.php";

@@ -22,6 +22,9 @@ hr{ border: none; border-top: 1px dotted #333 }
 </head>
 <body>
 	<h1 class="box"><a href="/"><?php echo $settings->site_title; ?></a></h1>
+	<?php foreach(get_messages() as $message) { ?>
+		<div class="done"><?php echo $message; ?></div>
+	<?php } ?>
 	<?php require_once($template); ?>
 	<div class="box">
 		Thanks for using Sorbet

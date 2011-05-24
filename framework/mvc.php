@@ -70,9 +70,13 @@ class Page{
 				if(is_string($file))
 					$file = array($file);
 				$templates = array();
+				$theme = $settings->theme;
+				if($_SESSION['ADMIN_AUTH'] && $_GET['theme']){ // TODO!: make $_SESSION a func
+					$theme = $_GET['theme'];
+				}
 				foreach($file as $f){
 					$templates = array(
-						"../themes/" . $settings->theme . "/$f",
+						"../themes/" . $theme . "/$f",
 						"../templates/$f"
 					);	
 				}
@@ -82,6 +86,9 @@ class Page{
 					if(file_exists($template))
 						return $template;
 				}
+			}
+			if($_SESSION['ADMIN_AUTH'] && $_GET['theme']){
+				put_temp_message("You are viewing this page in Test Drive.");
 			}
 			$data = $this->data;
 			$page_data = $this->page_data;

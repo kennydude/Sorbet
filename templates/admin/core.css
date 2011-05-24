@@ -16,6 +16,13 @@ body{
 	margin: 5px;
 	cursor: hand;
 }
+.tabs{ padding: 0px }
+.tabs a.selected{ border-bottom: 5px solid #0066cc; }
+.tabs a{
+	text-decoration: none;
+	color: #333;
+	padding: 5px;
+}
 #sheet{	
 	position: absolute;
 	left: 0px;
