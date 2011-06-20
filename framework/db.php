@@ -34,7 +34,7 @@ function query_database($sql){
 			$result[] = $row;
 		@mysql_free_result($r);
 		return $result;
-	} else{ /* TODO: error handling */ print "db error" . mysql_error(); }
+	} else{ myErrorHandler(-3, mysql_error(), "DB", -1); }
 }
 
 /**
@@ -45,7 +45,13 @@ function query_database($sql){
 function put_data($table, $data){
 	if(!$data['id']){ // INSERT
 		unset($data['id']);
-		$sql = "INSERT INTO $table (" . implode(array_keys($data), ",") .
+		$key = array_keys($data);
+		$keys = "";
+		foreach($key as $k){
+			$keys .= "`$k`,";
+		}
+		$keys = substr($keys, 0, -1);
+		$sql = "INSERT INTO $table (" . $keys .
 			") VALUES( ". implode( ae( array_values($data) ), "," ) ." )";
 	} else{ // UPDATE 
 		$sql = "UPDATE $table SET";
@@ -131,7 +137,10 @@ class LessThanFilter extends DatabaseFilter{
 class GroupByFilter extends DatabaseFilter{
 	public $atEnd = true;
 	function __construct($by) {
-		$this->_by = $by;
+		$this->_by = array();
+		foreach($by as $k => $v){
+			$this->_by[$k] = "`$v`";
+		}
 	}
 	public function sql(){
 		return " GROUP BY ".implode($this->_by, ",");

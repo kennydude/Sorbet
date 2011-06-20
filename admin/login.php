@@ -11,10 +11,7 @@ class AdminLoginPage extends AdminPage{
 	
 	public function postHandler(){
 		if(auth_user($_POST['username'], $_POST['password'])){
-			if($_GET['format'] == "json"){
-				// TODO: OAUTH
-			} else
-				header("Location: index.php"); exit("Your browser should now redirect you");
+			header("Location: index.php"); exit("Your browser should now redirect you");
 		}
 		return "auth_error";
 	}

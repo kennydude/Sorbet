@@ -6,12 +6,14 @@
 // This is called mvc.php, just so you know what it is.
 // Really it's only VC, models are in use in other locations
 
+
 /***
  * Core class for rendering.
  */
 class Page{
 	public $template; /**< The template to use. You need to override this */
 	public $masterPage;
+	public $apiOnly = false;
 	
 	public $page_data = array(); /**< Data that may be required by the template (to keep it common) */
 	
@@ -39,7 +41,7 @@ class Page{
 	
 	
 	public function render(){
-		global $settings;
+		global $settings, $page;
 		if($this->isDataPage)
 			$this->data = $this->fetchData();
 			if($_POST || $_FILES)
@@ -48,6 +50,8 @@ class Page{
 			if($_POST || $_FILES)
 				$post_response = $this->postHandler();
 		$this->onPreRender();
+		if($this->apiOnly == true)
+			$_GET['format'] = "json";
 		if($_GET['format']){ // Output as JSON etc
 			switch($_GET['format']){
 				case "json":
@@ -61,6 +65,19 @@ class Page{
 					break;
 			}
 		} else{
+			if($_SESSION['ADMIN_AUTH'] && $_GET['theme']){
+				put_temp_message("You are viewing this page in Test Drive.");
+			}
+			$data = $this->data;
+			$page_data = $this->page_data;
+			$coredir = $settings->website_root."templates/"; // TODO: Have this to work properly
+			$page = $this;
+			function includeTemplate($template){
+				global $page;
+				if(!@include_once(getTemplate($template))){
+					myErrorHandler(-3, "Template $template could not be found", "includeTemplate()", -1);
+				}
+			}
 			/**
 			 * Use for inside templates mainly to include other templates
 			 * @param unknown_type $file
@@ -75,10 +92,11 @@ class Page{
 					$theme = $_GET['theme'];
 				}
 				foreach($file as $f){
-					$templates = array(
-						"../themes/" . $theme . "/$f",
-						"../templates/$f"
-					);	
+					$templates[] = "../themes/$theme/$f";
+					$templates[] = "../templates/$f";
+					foreach($settings->activated_plugins as $plugin){
+						$templates[] = "../plugins/$plugin/templates/$f";
+					}
 				}
 				if($_GET['debug'] == "true" && $settings->debug == true)
 					print_r($templates);
@@ -87,12 +105,13 @@ class Page{
 						return $template;
 				}
 			}
-			if($_SESSION['ADMIN_AUTH'] && $_GET['theme']){
-				put_temp_message("You are viewing this page in Test Drive.");
+			function resdir(){ // get current dir on server
+				global $settings;
+				$d = debug_backtrace();
+				$d = $d[0]['file'];
+				$d = str_replace($settings->file_root, "", $d);
+				echo $settings->website_root . dirname($d);
 			}
-			$data = $this->data;
-			$page_data = $this->page_data;
-			$coredir = $settings->website_root."templates/"; // TODO: Have this to work properly
 			if(!is_null($this->masterPage)){
 				$template = getTemplate($this->template);
 				require_once(getTemplate($this->masterPage));

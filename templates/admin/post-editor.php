@@ -2,12 +2,13 @@
 <div id="main-post" class="box left-col">
 	<input type="text" name="title" value="<?php echo $data->title; ?>" />
 	<span class="clear"></span>
+	<?php call_hook("post_editor_bellow_title"); ?>
 	<div class="toolbar"><!-- Javascript toolbar!!!! --></div>
 	<textarea name="body" id="body" style="width:100%; min-height:400px;padding:6px;"><?php echo $data->body; ?></textarea>
 	<input type="submit" value="Save Post" />
 </div>
 <div id="main-side" class="right-col">
-	<div class="box-nopad">
+	<div class="box-toppad">
 		<span class="subtitle">Post options</span><br/>
 		<hr/>
 		Url Slug:<br/>
@@ -45,10 +46,65 @@
 			<option value="private" <?php if($pub == "private"){ echo "selected='selected'"; } ?>>Private</option>
 		</select>
 	</div>
-	<div class="title">Help</div>
+	<div class="box-toppad">
+		<span class="subtitle">Permissions</span>
+		<b>Design only</b>
+		<hr/>
+		<table>
+			<tr>
+				<td></td>
+				<td>User</td>
+				<td>Group</td>
+				<td>World</td>
+			</tr>
+			<tr>
+				<td>Read</td>
+				<td><input type="checkbox" /></td>
+				<td><input type="checkbox" /></td>
+				<td><input type="checkbox" /></td>
+			</tr>
+			<tr>
+				<td>Write</td>
+				<td><input type="checkbox" /></td>
+				<td><input type="checkbox" /></td>
+				<td><input type="checkbox" /></td>
+			</tr>
+			<tr>
+				<td>Change PMs</td>
+				<td><input type="checkbox" /></td>
+				<td><input type="checkbox" /></td>
+				<td><input type="checkbox" /></td>
+			</tr>
+		</table>
+	</div>
+	<div class="box-toppad">
+		<span class="subtitle">Social Publishing Options</span><br/>
+		<hr/>
+		<b>This is design-only for now</b>
+		<table>
+			<tr>
+				<td>
+					<img src="<?php echo $coredir; ?>/admin/res/twitter.png" />
+				</td><td>
+					<input type="checkbox" /> Send a tweet<br/>
+					<textarea class="limit" data-limit="140"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="<?php echo $coredir; ?>/admin/res/fb.png" />
+				</td><td>
+					<input type="checkbox" /> Share on Facebook<br/>
+					<textarea class="limit" data-limit="420"></textarea>
+				</td>
+			</tr>	
+		</table>
+	</div>
+	<!-- <div class="title">Help</div>
 	Here's a quick Markdown refresher!
-	<?php include("markdown-guide.php"); ?>
+	<php include("markdown-guide.php"); > -->
 </div>
 </form>
 <div class="reset"></div>
+<script type="text/javascript" src="<?php echo $coredir; ?>/admin/res/jquery.limit.js"></script>
 <script type="text/javascript" src="<?php echo $coredir; ?>/admin/res/post-editor.js"></script>

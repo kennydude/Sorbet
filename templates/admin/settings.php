@@ -8,6 +8,7 @@ function mid_header(){
 	<div class="tabs">
 		<a <?php q("main"); ?> href="?tab=main">Main</a>
 		<a <?php q("themes"); ?> href="?tab=themes">Themes</a>
+		<a <?php q("plugins"); ?> href="?tab=plugins">Plugins</a>
 	</div>
 	<?php
 }

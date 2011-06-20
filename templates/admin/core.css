@@ -46,7 +46,10 @@ th{ padding: 0 20px; }
 .centrebox, .box{
 	margin: 10px;
 }
-.centrebox, .box, .box-nopad{
+.box-toppad{
+	margin-top: 10px;
+}
+.centrebox, .box, .box-nopad, .box-toppad{
 	background: #fff;
 	border: 1px solid #ccc;
 	padding: 10px;
@@ -95,6 +98,13 @@ input[type=text], input[type=password]{
 	background: #006699;
 	color: #fff;
 	font-size: 25px;
+}
+#quickly table{
+	width: 100%;
+	font-size: 25px;
+}
+#quickly input{
+	
 }
 .sep{ border-right: 1px solid #fff; width: 0px; margin-right: 2px; }
 .headerbox a{ color: #fff !important; }

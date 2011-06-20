@@ -39,6 +39,10 @@ class User{
 	}
 }
 
+class oAuthToken extends Blob{
+	public $content_type = "oAuthToken";
+}
+
 function auth_user($username, $password){
 	$user = User::getUserByUsername($username);
 	if(!$user)

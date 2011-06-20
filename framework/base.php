@@ -22,6 +22,11 @@ class Blob{
 	public $id;
 	public $mention_url = "?tag=$1&type=mention";
 	
+	/**
+	 * Called to add hooks
+	 */
+	public function onPreAdminEditor(){ }
+	
 	public function __construct(){
 		$this->created = "now";
 	}
@@ -134,6 +139,12 @@ class Blob{
 		$item->status = $data['status'];
 		$item->url_slug = $data['url_slug'];
 		$item->_parent = $data['parent'];
+		$textra = get_data('extra_data', array('link' => $item->id));
+		foreach($textra as $extra){
+			if($extra['type'] == "EXTRA"){
+				$item->extra_data[$extra['key']] = $extra['value'];
+			}
+		}
 		return $item;
 	}
 	
@@ -182,7 +193,17 @@ class Blob{
 		$id = mysql_insert_id();
 		if($id != 0)
 			$this->id = $id;
-		// Update tags
+		// TODO: THIS WILL NEED MOVING! :D
+		mysql_query("DELETE FROM extra_data WHERE `link`='".$this->id."}'");
+		foreach($this->extra_data as $key => $value){
+			put_data("extra_data", array(
+				"link" => $this->id,
+				"type" => "EXTRA",
+				"key" => $key,
+				"value" => $value
+			));
+		}
+		// Update tags. TODO: CLEAROUT!
 		Tag::clearForObject($this, "mention");
 		preg_match_all("/\@([a-zA-Z0-9]+)/", $this->body, $out);
 		$mentions = array();
@@ -233,7 +254,7 @@ class Tag{
 	public static function clearForObject($id, $type = 0){
 		if(!is_int($id))
 			$id = $id->id;
-		$sql = "DELETE FROM tags WHERE `link`='".e($id)."'"; // TODO: Move to db.php
+		$sql = "DELETE FROM extra_data WHERE `type`='TAG' `link`='".e($id)."'"; // TODO: Move to db.php
 		if(!is_int($type))
 			$sql .= " AND `type`='".e($type)."'";
 		// echo $sql;
@@ -252,7 +273,7 @@ class Tag{
 	}
 	
 	public static function getAppearances($tagText = '', $tagType=''){
-		$data = get_data('tags', array('type' => $tagType, 'text' => $tagText));
+		$data = get_data('extra_data', array('key' => $tagType, 'value' => $tagText));
 		$r = array();
 		foreach($data as $t){
 			$i = new Tag();
@@ -265,8 +286,8 @@ class Tag{
 	}
 
 	public static function getTags(){
-		$data = get_data("tags", array(
-			new GroupByFilter(array("text", "type"))
+		$data = get_data("extra_data", array(
+			new GroupByFilter(array("value", "key"))
 		));
 		//$sql = "SELECT * FROM tags GROUP BY text, type";
 		//$data = query_database($sql);
@@ -285,9 +306,9 @@ class Tag{
 	 */
 	public function commit(){
 		put_data('tags', array(
-			"type" => $this->type,
+			"key" => $this->type,
 			"link" => $this->_link,
-			"text" => $this->text
+			"value" => $this->text
 		));
 		$this->_saved = true;
 	}

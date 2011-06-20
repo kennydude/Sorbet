@@ -2,6 +2,11 @@
  * Post editor
  */
 $(document).ready(function(){
+	$("textarea.limit").each(function(){
+		box = $("<div>");
+		$(this).after(box);
+		$(this).limit($(this).attr("data-limit"), box);
+	});
 	$("#time-to-now").removeClass("hide").one("click", function(){
 		d = new Date();
 		$("#day").val(d.getDate());

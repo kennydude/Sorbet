@@ -18,9 +18,12 @@ class AdminEditorPage extends AdminPage{
 			if(!$type)
 				$type = Blob;
 			$d = new $type();
+			$d->onPreAdminEditor();
 			$this->template = $d->admin_editor;
-		} else
+		} else{
+			$this->data->onPreAdminEditor();
 			$this->template = $this->data->admin_editor;
+		}
 	}
 	
 	public function fetchData(){
@@ -39,6 +42,7 @@ class AdminEditorPage extends AdminPage{
 		$data->created = $date->format('Y-m-d H:i:s');
 		if($_GET['type'])
 			$data->content_type = $_GET['type'];
+		$data->extra_data = $_POST['extra_data'];
 		$data->handlePostPreCommit($_POST);
 		$data->commit();
 		$data->handlePostPostCommit($_POST);

@@ -30,10 +30,44 @@ class AdminThemeSettingsPage extends AdminSettingsPage{
 			closedir($handle);
 		}
 		return array(
-			"current_theme" => array_merge(array("codename" => $settings->theme),
-												$themes[$settings->theme]),
+			"current_theme" => array_merge(array("codename" => $settings->theme), $themes[$settings->theme]),
 			"themes" => $themes
 		);
+	}
+}
+
+class AdminPluginSettingsPage extends AdminSettingsPage{
+	public $template = "admin/plugin-settings.php";
+	function postHandler(){
+		global $settings;
+		require_once("plugins.php");
+		clear_plugin_cache();
+		unset($_POST['__']);
+		foreach($_POST as $key => $value){
+			if($value == "on"){
+				activate_plugin($key);
+			}
+		}
+		//$settings->activated_plugins = $ac;
+		$settings->save();
+		put_message("Settings saved!");
+		header("Location: settings.php?tab=plugins");
+		exit();
+	}
+	function fetchData(){
+		global $settings;
+		$plugins = array();
+		$activated_plugins = $settings->activated_plugins;
+		if ($handle = opendir('../plugins/')) {
+			while (false !== ($file = readdir($handle))) {
+				if ($file != "." && $file != "..") {
+					$plugins[$file] = json_decode(file_get_contents("../plugins/$file/info.json"), true);
+					$plugins[$file]['selected'] = (in_array($file, $activated_plugins));
+				}
+			}
+			closedir($handle);
+		}
+		return $plugins;
 	}
 }
 
@@ -46,9 +80,16 @@ class AdminGeneralSettingsPage extends AdminSettingsPage{
 	}
 }
 
+if(!$_GET['tab']){
+	$_GET['tab'] = "main";
+}
+
 switch($_GET['tab']){
 	case "themes":
 		$page = new AdminThemeSettingsPage();
+		break;
+	case "plugins":
+		$page = new AdminPluginSettingsPage();
 		break;
 	default:
 		$page = new AdminGeneralSettingsPage();

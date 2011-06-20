@@ -1,0 +1,11 @@
+{
+	"plugin_name" : "Reviews",
+	"plugin_description" : "Adds a review type of page",
+	"plugin_creator" : "Joe Simpson (@kennydude)",
+	"content_types" : {
+		"review" : {
+			"file" : "review.php",
+			"class" : "Review"
+		}
+	}
+}
