@@ -3,6 +3,24 @@
 require "../framework/core.php";
 require "../framework/auth.php";
 
+function human_content_types(){
+	$keys = array_keys(get_content_types());
+	$r = array();
+	foreach($keys as $key){
+		$r[$key] = array(
+			"humans" => ucwords($key . "s")
+		);
+	}
+	return $r;	
+}
+
+class AdminContentTypeListPage extends AdminPage{
+	public $apiOnly = true;
+	public function fetchData(){
+		return human_content_types();
+	}
+}
+
 class AdminListPage extends AdminPage{
 	public $template = "admin/list.php";
 
@@ -22,6 +40,7 @@ class AdminListPage extends AdminPage{
 			'item_actions' => array(
 				"Edit " . $uc => "blob-editor.php?blob=$1"
 			),
+			'content_types' => human_content_types(),
 			'headers' => $type::get_list_headers()
 		);
 	}
@@ -31,5 +50,9 @@ class AdminListPage extends AdminPage{
 	}
 }
 
-$page = new AdminListPage();
+if($_GET['type'] == "content_types"){
+	$page = new AdminContentTypeListPage();
+} else{
+	$page = new AdminListPage();
+}
 $page->render();

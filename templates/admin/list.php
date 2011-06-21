@@ -7,6 +7,11 @@
 	</form>
 	<?php } ?>
 </div>
+<div class="tabs">
+	<?php foreach($page_data['content_types'] as $key => $value) { ?>
+	<a <?php if($_GET['type'] == $key){ echo " class='selected'"; } ?> href="list.php?type=<?php echo $key; ?>"><?php echo $value['humans']; ?></a>
+	<?php } ?>
+</div>
 <table class="box">
 	<tr>
 		<?php foreach($page_data['headers'] as $k => $header){

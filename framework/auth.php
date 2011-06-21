@@ -11,9 +11,12 @@ class User{
 	public $name;
 	public $salt;
 	
-	public function validatePassword($password){
-		global $salt;
-		$sha1 = "$salt-$password-" . $this->salt;
+	public function validatePassword($password, $preHashed = false){
+		global $settings;
+		if($preHashed == false){
+			$password = sha1("$password-" . $settings->salts[1]);
+		}
+		$sha1 = $settings->salts[0]."-$password-" . $this->salt;
 		$sha1 = sha1($sha1);
 		if($sha1 == $this->password)
 			return true;
@@ -21,11 +24,12 @@ class User{
 	}
 	
 	public static function getUserByUsername($username){
-		$sql = "SELECT * FROM users WHERE `username`='" . e($username) . "'";
-		$data = query_database($sql);
-		$data = $data[0];
-		if(!$data)
+		$data = get_data("users", array(
+			"username" => $username
+		));
+		if(count($data) == 0)
 			return;
+		$data = $data[0];
 		return User::userFromArray($data);
 	}
 	
@@ -43,13 +47,13 @@ class oAuthToken extends Blob{
 	public $content_type = "oAuthToken";
 }
 
-function auth_user($username, $password){
+function auth_user($username, $password, $preHashed = false){
 	$user = User::getUserByUsername($username);
-	if(!$user)
-		return false;
-	if($user->validatePassword($password)){
+	if($user == NULL)
+		return "username";
+	if($user->validatePassword($password, $preHashed)){
 		$_SESSION['ADMIN_AUTH'] = $user->username;
 		return true;
 	}
-	return false;
+	return "password";
 }

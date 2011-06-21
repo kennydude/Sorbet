@@ -10,10 +10,11 @@ class AdminLoginPage extends AdminPage{
 	public $template = "admin/login.php";
 	
 	public function postHandler(){
-		if(auth_user($_POST['username'], $_POST['password'])){
+		$response = auth_user($_POST['username'], $_POST['password'], ($_POST['prehashed'] == "true") );
+		if(is_bool($response)){
 			header("Location: index.php"); exit("Your browser should now redirect you");
 		}
-		return "auth_error";
+		return $response;
 	}
 }
 

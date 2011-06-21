@@ -9,24 +9,27 @@ function cie($name){
 <html>
 	<head>
 		<title>Sorbet Admin</title>
+		<script type="text/javascript">
+			var resdir = "<?php echo resdir(); ?>";
+		</script>
 		<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1, width=device-width">
 		<script type="text/javascript" src="<?php echo $coredir; ?>/admin/res/jquery.min.js"></script>
+		<script type="text/javascript" src="<?php echo $coredir; ?>/admin/res/admin.js"></script>
 		<link rel="stylesheet" type="text/css" href="<?php echo $coredir; ?>/admin/core.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo $coredir; ?>/core.css" />
 	</head>
 	<body>
 		<div class="headerbox"><div class="w980">
 			<?php if(!function_exists("admin_header")) {?>
+				<div class="right">
+					Hello <?php echo $_SESSION['ADMIN_AUTH']; ?>
+				</div>
 				<?php $sep = '<span class="sep">&nbsp;</span>'; ?>
 				<a href="index.php">Sorbet</a>
 				<?php echo $sep; ?>
-				<a href="list.php?type=page">Pages</a>
+				<a id="postsAndMore" href="list.php?type=post">Posts + more</a>
 				<?php echo $sep; ?>
-				<a href="list.php?type=list">Lists</a>
-				<?php echo $sep; ?>
-				<a href="list.php?type=post">Posts</a>
-				<?php echo $sep; ?>
-				<a href="tags.php">Tags</a>
+				<a href="users.php">Users</a>
 				<?php echo $sep; ?>
 				<a href="settings.php">Settings</a>
 			<?php } else{ admin_header(); } ?>
