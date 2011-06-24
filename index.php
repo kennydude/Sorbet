@@ -17,9 +17,12 @@ class HomePage extends Page{
 	
 	public function fetchData(){
 		global $settings;
+		$page = $_GET['page'];
+		if(!$page)
+			$page = 1;
 		switch($settings->home_page){
 			case "posts":
-				return Post::getPosts(0, Post::publicFilters());
+				return Post::getPosts(($page-1) * 10, Post::publicFilters());
 				break;
 		}
 	}
@@ -44,7 +47,16 @@ class BlobViewPage extends Page{
 }
 
 if(!defined("INCLUDE_INDEX")){
-	if($_GET['u']){
+	if($_GET['e']){
+		switch($_GET['e']){
+			case "403":
+				new Error_403();
+				break;
+			case "404":
+				new Error_404();
+				break;
+		}
+	} else if($_GET['u']){
 		$page = new BlobViewPage();
 	} else{
 		$page = new HomePage();

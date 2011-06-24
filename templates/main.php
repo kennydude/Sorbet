@@ -19,5 +19,6 @@ hr{ border: none; border-top: 1px dotted #333 }
 	<?php require_once($template); ?>
 	<hr/>
 	You are using Sorbet. This is the default theme
+<?php call_hook("close_body"); ?>
 </body>
 </html>

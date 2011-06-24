@@ -23,16 +23,7 @@ class Post extends Blob{
 	/***
 	 * Get Posts from database
 	 */
-	public static function getPosts($start = '', $filters = array()){
-		return self::fetchBlobs($from, 'post', $filters);
-	}
-	
-	// TODO: Comments via Disqus
-	
-	/***
-	 * Used for admin etc only, otherwise just use Disqus widget
-	 */
-	public function comments(){
-		
+	public static function getPosts($from = '', $filters = array()){
+		return self::fetchBlobs($from,NULL, $filters);
 	}
 }

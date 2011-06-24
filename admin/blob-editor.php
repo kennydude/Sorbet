@@ -12,22 +12,20 @@ class AdminEditorPage extends AdminPage{
 		parent::onPreRender();
 		if($this->preview == true)
 			return;
-		if($_GET['type']){
+		$this->data->onPreAdminEditor();
+		$this->template = $this->data->admin_editor;
+	}
+	
+	public function fetchData(){
+		if($_GET['type'] && !$_GET['blob']){
 			$content_types = get_content_types();
 			$type = $content_types[$_GET['type']];
 			if(!$type)
 				$type = Blob;
-			$d = new $type();
-			$d->onPreAdminEditor();
-			$this->template = $d->admin_editor;
+			return new $type();
 		} else{
-			$this->data->onPreAdminEditor();
-			$this->template = $this->data->admin_editor;
+			return Blob::getBlob($_GET['blob']);
 		}
-	}
-	
-	public function fetchData(){
-		return Blob::getBlob($_GET['blob']);
 	}
 	
 	public function postHandler($data){

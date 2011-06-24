@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+	Options +FollowSymlinks
+	RewriteEngine on
+	RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+	RewriteRule ^(.*)$ http://%1/$1 [R=301,NC,L]
+
+	RewriteRule ^settings.json(.*)$ /index.php?e=403 [L]
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+  	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ /index.php?u=$1 [L,QSA]
+</ifModule>

@@ -80,11 +80,36 @@ class AdminGeneralSettingsPage extends AdminSettingsPage{
 	}
 }
 
+class AdminSocialSettingsPage extends AdminSettingsPage{
+	public $template = "admin/social-settings.php";
+	function postHandler(){
+		global $settings;
+		$settings->share_buttons = array_keys($_POST['share_buttons']);
+		$settings->save();
+		put_message("Settings saved!");
+		header("Location: settings.php?tab=social");
+		exit();
+	}
+	function fetchData(){
+		global $settings;
+		require("share_buttons.php");
+		return array(
+			"share_buttons" => array(
+				"enabled" => $settings->share_buttons,
+				"available" => array_keys($share_buttons)
+			)
+		);
+	}
+}
+
 if(!$_GET['tab']){
 	$_GET['tab'] = "main";
 }
 
 switch($_GET['tab']){
+	case "social":
+		$page = new AdminSocialSettingsPage();
+		break;
 	case "themes":
 		$page = new AdminThemeSettingsPage();
 		break;

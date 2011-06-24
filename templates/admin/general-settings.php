@@ -1,6 +1,7 @@
 <div class="title">Settings</div>
 <?php cie("mid_header"); ?>
 <div class="box">
+THIS IS GOING TO GET A MAJOR OVERHAL!
 	<form method="post" action="settings.php">
 	<table>
 		<?php foreach($data as $group => $settings) { ?>

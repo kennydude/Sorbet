@@ -29,5 +29,6 @@ hr{ border: none; border-top: 1px dotted #333 }
 	<div class="box">
 		Thanks for using Sorbet
 	</div>
+<?php call_hook("close_body"); ?>
 </body>
 </html>

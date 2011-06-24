@@ -22,6 +22,11 @@ class Blob{
 	public $id;
 	public $mention_url = "?tag=$1&type=mention";
 	
+	public function permalink(){
+		global $settings;
+		return "http://${_SERVER['HTTP_HOST']}" . $settings->website_root . "permalink.php?id=" . $this->id;
+	}
+
 	/**
 	 * Called to add hooks
 	 */
@@ -106,6 +111,8 @@ class Blob{
 	 */
 	public static function getBlob($id){
 		$data = get_data('blobs', array('id' => $id));
+		if(count($data) == 0)
+			return NULL;
 		$data = $data[0];
 		return static::arrayToBlob($data);
 	}
@@ -195,7 +202,7 @@ class Blob{
 			$this->id = $id;
 		// TODO: THIS WILL NEED MOVING! :D
 		mysql_query("DELETE FROM extra_data WHERE `link`='".$this->id."}'");
-		foreach($this->extra_data as $key => $value){
+		foreach($this->extra_data as $key => $value){ // TODO: OPTIMIZE PUT_DATA!
 			put_data("extra_data", array(
 				"link" => $this->id,
 				"type" => "EXTRA",
@@ -229,6 +236,23 @@ class Blob{
 				$tag->commit();
 				$mentions[$mention] = true; // prevents multiple tags per post
 			}
+		}
+	}
+	/***
+	 * Used for admin etc only, otherwise just use Disqus widget
+	 */
+	public function getComments(){
+		global $settings;
+		$engine_setup = $settings->comment_engine;
+		return new $engine_setup['name']($this, $engine_setup);
+	}
+	public function share_buttons($template='small', $seperator = ""){
+		global $settings, $share_buttons;
+		require_once("share_buttons.php");
+		foreach($settings->share_buttons as $share_button){
+			$button = new $share_buttons[$share_button];
+			$button->render($template, $this);
+			echo $seperator;
 		}
 	}
 }
@@ -312,7 +336,46 @@ class Tag{
 		));
 		$this->_saved = true;
 	}
+
 }
+
+
+class CommentEngine{
+	public static function getDashboardInfo() { error("Comment engine won't return any data!"); }
+	public function render(){ error("Comment engine hasn't implemented the render function!"); }
+	public function __construct($blob, $options){ $this->blob = $blob; $this->options = $options; }
+}
+
+class DisqusCommentEngine extends CommentEngine{
+	public static function getDashboardInfo(){
+		return array(
+			"moderate" => "http://disqus.com/admin/moderate/"
+		);
+	}
+	public function render(){
+		global $settings;
+?>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+<?php if($settings->debug == true) { ?>
+var disqus_developer = 1;
+<?php } ?>
+    var disqus_shortname = '<?php echo $this->options['shortname']; ?>';
+    var disqus_identifier = '<?php echo $this->blob->id; ?>';
+    var disqus_url = '<?php echo $this->blob->permalink(); ?>';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<br/>
+<?php
+	}
+}
+
 
 function get_url(){
 	return "http://${_SERVER['HTTP_HOST']}${_SERVER['PHP_SELF']}?${_SERVER['QUERY_STRING']}";

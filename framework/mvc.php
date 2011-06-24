@@ -166,7 +166,13 @@ class Error_Page extends Page{
 		header("Status: ". $this->errorNo, true);
 		$this->render();
 		exit();
+		die();
 	}
+}
+
+class Error_403 extends Error_Page{
+	public $errorNo = "403 Forbidden";
+	public $template = "error/403.php";
 }
 
 class Error_404 extends Error_Page{

@@ -5,7 +5,6 @@ require_once("post.php");
 require_once("./list.php");
 require_once("mvc.php");
 require_once("./page.php");
-require_once("plugins.php");
 require_once("file-storage.php");
 require_once("embed.php");
 require_once("settings.php");
@@ -13,20 +12,29 @@ $settings = new Settings();
 if($settings->settingsWorking == false){
 	new Error_Misconfig("Sorbet is not configured. Please navigate to /admin/installer.php");
 }
+require_once("plugins.php");
+
 // Error Handling:
 function exception_handler($exception) {
 	myErrorHandler(-1, $exception->getMessage(),  $exception->getFile(), $exception->getLine());
 }
+function error($error) { myErrorHandler(-1, $error, "Sorbet", -2); } 
+
 set_exception_handler('exception_handler');
+
 function myErrorHandler($errno, $errstr, $errfile, $errline) {
     if (!(error_reporting() & $errno)) {
         return;
     }
+    if($errline > 0)
+	$l = "at line $errLine";
+    else
+	$l = "and Sorbet fired this (code $errline)";
     print <<<EOF
-<div class="error" style="margin: 5px;padding: 10px;border: 2px solid #ff3300; background: #ff9966;">
+<div class="error" style="font-family:sans-serif;margin: 5px;padding: 10px;border: 2px solid #ff3300; background: #ff9966;">
 <b>Sorbet threw an error!</b><br/>
 The error was "$errstr"<br/>
-It happened in $errfile at line $errline<br/>
+It happened in $errfile $l<br/>
 Please report this error
 </div>
 EOF;
@@ -40,7 +48,7 @@ function __autoload($class_name) {
 	global $autoload_cache;
 	if($autoload_cache[$class_name]){
 		if(!@include_once($autoload_cache[$class_name])){
-			print "<b>The page may not load correctly: The class couldn't autoload</b><br/>";
+			myErrorHandler(-2, "Autoloading class '$class_name' failed", $autoload_cache[$class_name], -2);
 		}
 	}
 }

@@ -29,6 +29,7 @@ function cie($name){
 				<?php echo $sep; ?>
 				<a id="postsAndMore" href="list.php?type=post">Posts + more</a>
 				<?php echo $sep; ?>
+				<?php call_hook("admin_header"); ?>
 				<a href="users.php">Users</a>
 				<?php echo $sep; ?>
 				<a href="settings.php">Settings</a>

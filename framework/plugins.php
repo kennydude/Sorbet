@@ -9,7 +9,7 @@ require_once("core.php");
 function clear_plugin_cache(){
 	global $settings;
 	$settings->activated_plugins = array();
-	$settings->plugin_cache = array("content_types" => array());
+	$settings->plugin_cache = array("content_types" => array(),"hook_cache"=>array(),"pages"=>array());
 }
 
 function activate_plugin($plugin_name){
@@ -23,34 +23,58 @@ function activate_plugin($plugin_name){
 		}
 		// Now we parse everything
 		// Step 1: Add the actual plugin to settings
-		$settings->activated_plugins = $settings->activated_plugins + array($plugin_name);
-		// Step 2: Add any content types to plugin cache
-		$cache = $settings->plugin_cache;
-		foreach($plugin['content_types'] as $key => $v){
-			$plugin['content_types'][$key]['plugin_name'] = $plugin_name;
+		if(!in_array($plugin_name, $settings->activated_plugins)){
+			$plugins = $settings->activated_plugins;
+			$plugins[] = $plugin_name;
+			$settings->activated_plugins = $plugins;
 		}
-		print_r($plugin['content_types']);
-		$cache['content_types'] = 
-			$plugin['content_types'] +
-			$settings->plugin_cache['content_types'];
-		
+		// Step 2: Cache everything we need
+		$cache = $settings->plugin_cache;
+		if($plugin['content_types']){
+			foreach($plugin['content_types'] as $key => $v){
+				$plugin['content_types'][$key]['plugin_name'] = $plugin_name;
+			}
+			$cache['content_types'] = 
+				$plugin['content_types'] +
+				$settings->plugin_cache['content_types'];
+		} if($plugin['hooks']){
+			foreach($plugin['hooks'] as $key => $v){
+				$plugin['hooks'][$key]['plugin_name'] = $plugin_name;
+			}
+			$cache['hook_cache'] =
+				$plugin['hooks'] +
+				$settings->plugin_cache['hook_cache'];
+		} if($plugin['pages']){
+			$cache['pages'][$plugin_name] = $plugin['pages'];
+		}
 		$settings->plugin_cache = $cache;
 	} else{
 		return false;
 	}
 }
 $hooks = array();
+foreach($settings->plugin_cache['hook_cache'] as $hook){
+	$hooks[$hook['hook']][] = $hook + array("t" => "load");
+}
 
 function call_hook($hook_name, $args = array()){
 	global $hooks;
 	if(is_array($hooks[$hook_name])){
 		foreach($hooks[$hook_name] as $f){
-			call_user_func_array($f, $args);
+			if($f['t'] == "load"){
+				@include_once("../plugins/${f['plugin_name']}/${f['file']}");
+				call_user_func_array($f['function'], $args);
+			} else{
+				call_user_func_array($f, $args);
+			}
 		}
 	}
 }
 
 function hook_onto($hook_name, $function){
 	global $hooks;
-	$hooks[$hook_name][] = $function;
+	$key = $function; // no duplicates please!
+	if(is_array($function))
+		$key = get_class($function[0]) . "." . $function[1];
+	$hooks[$hook_name][$key] = $function;
 }

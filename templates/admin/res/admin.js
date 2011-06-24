@@ -16,4 +16,9 @@ $(document).ready(function(){
 			$("#postsAndMoreDropout").remove();
 		}
 	});
+	$(".done").animate({opacity:0.4}).animate({opacity:1.0}).animate({opacity:0.4}).animate({opacity:1.0}).each(function(){
+		$("<img>").attr("src", resdir + "/res/cross.png").prependTo(this).css("float", "right").css("opacity", 0.6).css("cursor", "hand").click(function(){
+			$(this).parent().hide("medium");
+		});
+	});
 });
